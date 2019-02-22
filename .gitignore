@@ -1,0 +1,16 @@
+# PyCharm folder
+.idea/
+
+# Access keys
+*.pem
+*.ppk
+*.crt
+
+# Basic auth
+*.htpasswd
+
+# Customized for bastion host
+.bashrc
+
+#
+*.txt

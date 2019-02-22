@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: >
+  Template is aimed to create necessary permission for kops and prepeare aws account for deploy
+
+Parameters:
+  AccessKeyRotation:
+    Type: Number
+    Description: Incrementing this value notifies AWS CloudFormation that you want to rotate your access key.
+
+Resources:
+  KopsUserGroup:
+    Type: "AWS::IAM::Group"
+    Properties:
+      GroupName: !Join [ "", [ "kops.", !Ref "AWS::StackName", ".group@", !Ref "AWS::Region" ]]
+      ManagedPolicyArns:
+#        List of  required permission according to https://github.com/kubernetes/kops/blob/master/docs/aws.md
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/IAMFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+      Path: "/"
+#      TODO: Consider to replace ManagedPolicyArns with definae policeis
+#      Policies:
+#        - Policies
+  KopsUser:
+    Type: "AWS::IAM::User"
+    Properties:
+      Groups:
+        - Ref: KopsUserGroup
+      UserName: !Join [ "", [ "kops.", !Ref "AWS::StackName", ".iam@", !Ref "AWS::Region" ]]
+
+  KopsUserAccessKey:
+    Type: "AWS::IAM::AccessKey"
+    Properties:
+      Serial: !Ref AccessKeyRotation
+      Status: Active
+      UserName: !Ref KopsUser
+
+Outputs:
+  AccessKeyId:
+    Value: !Ref KopsUserAccessKey
+  SecretAccessKey:
+    Value: !GetAtt KopsUserAccessKey.SecretAccessKey
