@@ -13,7 +13,7 @@ Master:
   Image: "jenkins/jenkins"
   ImageTag: "lts"
   ImagePullPolicy: "Always"
-  ImagePullSecret: jenkins
+# ImagePullSecret: jenkins
   Component: "jenkins-master"
   NumExecutors: 0
   # configAutoReload requires UseSecurity is set to true:
@@ -33,7 +33,7 @@ Master:
   # a restart loop.  Likewise if you disable the non-Jenkins identity store and instead use the Jenkins internal one,
   # you should revert Master.AdminUser to your preferred admin user:
   AdminUser: admin
-  # AdminPassword: <defaults to random>
+  AdminPassword: Password01
   OwnSshKey: false
   # If CasC auto-reload is enabled, an SSH (RSA) keypair is needed.  Can either provide your own, or leave unconfigured\false to allow a random key to be auto-generated.
   # If you choose to use your own, you must upload your decrypted RSA private key (not the public key above) to a Kubernetes secret using the following command:
