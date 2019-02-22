@@ -14,16 +14,16 @@
 export DOCKER_PASS="<lastpass>"
 
 echo "[$(date)] - Applying namespace"
-kubectl apply -f /Users/eddys/git/k8s-cluster/Namespaces/ops.yaml
+kubectl apply -f ../Namespaces/ops.yaml
 
 echo "[$(date)] - Adding secret for docker registry in artifactory"
 kubectl create secret docker-registry artifactory --docker-server=docker.artifactory.dev.intapp.com --docker-username=k8s_dev --docker-password=$DOCKER_PASS --docker-email=devops.dev@intapp.com
 
 echo "[$(date)] - Setting up helm"
-kubectl apply -f /Users/eddys/git/k8s-cluster/Authorization/helm/helm_default.yaml
-kubectl apply -f /Users/eddys/git/k8s-cluster/Authorization/helm/helm_ops.yaml
-kubectl apply -f /Users/eddys/git/k8s-cluster/Authorization/helm/helm_kube-system.yaml
-kubectl apply -f /Users/eddys/git/k8s-cluster/Authorization/helm/helm_kube-public.yaml
+kubectl apply -f ../Authorization/helm/helm_default.yaml
+kubectl apply -f ../Authorization/helm/helm_ops.yaml
+kubectl apply -f ../Authorization/helm/helm_kube-system.yaml
+kubectl apply -f ../Authorization/helm/helm_kube-public.yaml
 
 echo "[$(date)] - Installing tiller"
 helm init --service-account tiller --tiller-namespace ops
@@ -32,7 +32,7 @@ helm init --service-account tiller --tiller-namespace kube-system
 helm init --service-account tiller --tiller-namespace kube-public
 
 #echo "[$(date)] - Setting up traefik ingress - external"
-#helm upgrade --install -f /Users/eddys/git/k8s-cluster/Ingress/external.yaml  \
+#helm upgrade --install -f ../Ingress/external.yaml  \
 # --set dashboard.domain="traefik-external-eddy.eu.sbx.kube.intapp.com" \
 # --set service.annotations.service.beta.kubernetes.io/aws-load-balancer-ssl-cert="arn:aws:acm:eu-west-1:278942993584:certificate/1dcb38ff-8b2a-4d27-afba-b33fb3a04a51" \
 # --set service.annotations.service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags="Product=Kubernetes-Cluster\,Environment=DEV\,ProductComponents=ELB\,Contact=eddy.snow@intapp.com\,Team=DevOps" \
@@ -42,7 +42,7 @@ helm init --service-account tiller --tiller-namespace kube-public
 # helm-incubator/traefik
 
 echo "[$(date)] - Setting up traefik ingress - external tls"
-helm upgrade --install -f /Users/eddys/git/k8s-cluster/Ingress/external-tls.yaml \
+helm upgrade --install -f ../Ingress/external-tls.yaml \
  --set dashboard.domain="traefik-externaltls-eddy.eu.sbx.kube.intapp.com" \
  --set dashboard.auth.basic.devops='$apr1$u4OmhmyX$V8/V8o/QNH7Cjq6bONf900' \
  --set service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-ssl-cert"="arn:aws:acm:eu-west-1:278942993584:certificate/1dcb38ff-8b2a-4d27-afba-b33fb3a04a51" \
@@ -56,7 +56,7 @@ helm upgrade --install -f /Users/eddys/git/k8s-cluster/Ingress/external-tls.yaml
 
 
 #echo "[$(date)] - Setting up traefik ingress - internal"
-#helm upgrade --install -f /Users/eddys/git/k8s-cluster/Ingress/internal.yaml  \
+#helm upgrade --install -f ../Ingress/internal.yaml  \
 #--set dashboard.domain="traefik-internal-eddy.eu.sbx.kube.intapp.com" \
 #--set service.annotations.service.beta.kubernetes.io/aws-load-balancer-ssl-cert="arn:aws:acm:eu-west-1:278942993584:certificate/1dcb38ff-8b2a-4d27-afba-b33fb3a04a51" \
 #--set service.annotations.service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags="Product=Kubernetes-Cluster,Environment=DEV,ProductComponents=ELB,Contact=eddy.snow@intapp.com,Team=DevOps" \

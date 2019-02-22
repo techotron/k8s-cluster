@@ -11,7 +11,7 @@ S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/278942993584 -eddy-scra
 echo "[$(date)] - Deploying stacks to region: $AWS_REGION"
 echo "[$(date)] - Uploading templates to s3"
 
-aws s3 cp /Users/eddys/git/k8s-cluster $S3_CONFIG_BUCKET --recursive --profile $AWS_PROFILE --region $AWS_REGION
+aws s3 cp ../ $S3_CONFIG_BUCKET --recursive --profile $AWS_PROFILE --region $AWS_REGION
 
 # Might need to create manually with a passphrase: ssh-keygen -t rsa -b 4096 -f ~/.ssh/k8s_id_rsa
 echo "[$(date)] - Creating new PKI secret unless it already exists"
@@ -67,7 +67,7 @@ aws s3 cp s3://k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1/eddy.eu.sb
 aws s3 rm s3://k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1/eddy.eu.sbx.kube.intapp.com --recursive --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
-kops create -f /Users/eddys/git/k8s-cluster/Manifest/eu-eddy.sbx.kube.intapp.com.yaml --state="s3://k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1"
+kops create -f ../Manifest/eu-eddy.sbx.kube.intapp.com.yaml --state="s3://k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1"
 
 echo "[$(date)] - Creating pki secret and uploading to s3"
 kops create secret --name eddy.eu.sbx.kube.intapp.com sshpublickey admin -i ~/.ssh/k8s_id_rsa.pub --state="s3://k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1"
