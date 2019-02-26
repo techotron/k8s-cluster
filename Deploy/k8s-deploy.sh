@@ -85,18 +85,18 @@ export AWS_ACCESS_KEY_ID=$(aws cloudformation describe-stacks --stack-name $K8S_
 export AWS_SECRET_ACCESS_KEY=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="SecretAccessKey").OutputValue')
 
 echo "[$(date)] - Backing up old KOPS configuration"
-aws s3 cp s3://k8s-clusterstatestorage-eddy-k8s-environment-us-east-1/eddy.eu.sbx.kube.intapp.com s3://k8s-clusterstatestorage-eddy-k8s-environment-us-east-1/$KOPS_CONFIG_VERSION/eddy.eu.sbx.kube.intapp.com --recursive --profile $AWS_PROFILE
-aws s3 rm s3://k8s-clusterstatestorage-eddy-k8s-environment-us-east-1/eddy.eu.sbx.kube.intapp.com --recursive --profile $AWS_PROFILE
+aws s3 cp s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1/eddy.eu.sbx.kube.intapp.com s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1/$KOPS_CONFIG_VERSION/eddy.eu.sbx.kube.intapp.com --recursive --profile $AWS_PROFILE
+aws s3 rm s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1/eddy.eu.sbx.kube.intapp.com --recursive --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
-kops create -f ../Manifest/eu-eddy.sbx.kube.intapp.com.yaml --state="s3://k8s-clusterstatestorage-eddy-k8s-environment-us-east-1"
+kops create -f ../Manifest/eu-eddy.sbx.kube.intapp.com.yaml --state="s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1"
 
 if [ "$DEPLOY_TYPE" = "update" ]; then
     echo "[$(date)] - This is an update, no need to create a new pki secret"
 elif [ "$DEPLOY_TYPE" = "create" ]; then
     echo "[$(date)] - Creating pki secret and uploading to s3"
-    kops create secret --name eddy.eu.sbx.kube.intapp.com sshpublickey admin -i ~/.ssh/k8s_id_rsa.pub --state="s3://k8s-clusterstatestorage-eddy-k8s-environment-us-east-1"
+    kops create secret --name eddy.eu.sbx.kube.intapp.com sshpublickey admin -i ~/.ssh/k8s_id_rsa.pub --state="s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1"
 fi
 
 echo "[$(date)] - Deploy the cluster"
-kops update cluster eddy.eu.sbx.kube.intapp.com --yes --state="s3://k8s-clusterstatestorage-eddy-k8s-environment-us-east-1"
+kops update cluster eddy.eu.sbx.kube.intapp.com --yes --state="s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1"

@@ -35,7 +35,7 @@ spec:
     Team: DevOps
     Contact: eddy.snow@intapp.com
   cloudProvider: aws
-  configBase: s3://k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1/eddy.eu.sbx.kube.intapp.com
+  configBase: s3://k8s-clusterstatestorage-eddy-k8s-state-us-east-1/eddy.eu.sbx.kube.intapp.com
   dnsZone: ZLWYXWU2XPOKZ
   etcdClusters:
   - etcdMembers:
