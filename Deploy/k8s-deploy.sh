@@ -11,7 +11,7 @@ S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/278942993584 -eddy-scra
 echo "[$(date)] - Deploying stacks to region: $AWS_REGION"
 echo "[$(date)] - Uploading templates to s3"
 
-aws s3 cp ../ $S3_CONFIG_BUCKET --recursive --profile $AWS_PROFILE --region $AWS_REGION
+aws s3 cp ../ $S3_CONFIG_BUCKET --recursive --profile $AWS_PROFILE --region $AWS_REGION --exclude "*.git/*"
 
 # Might need to create manually with a passphrase: ssh-keygen -t rsa -b 4096 -f ~/.ssh/k8s_id_rsa
 echo "[$(date)] - Creating new PKI secret unless it already exists"
