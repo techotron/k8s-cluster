@@ -8,6 +8,13 @@ Run the `./k8s-deploy.sh` to deploy a cluster in the devops sandbox AWS account.
 
 Run the `./k8s-setup.sh` to setup the cluster with the ops namespace and install helm/tiller. 
 
+## Update K8s cluster
+This will update changes to the CFN stacks and kops manifest
+```bash
+./k8s-setup.sh update
+```
+
+
 ## Infrastructure
 Defined in the ./Manifest/eu-eddy.sbx.kube.intapp.com.yaml file
 

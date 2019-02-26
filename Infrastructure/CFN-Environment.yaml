@@ -57,38 +57,38 @@ Parameters:
 Mappings:
   Environment:
     dev:
-      PeerRoleArn: arn:aws:iam::382925334721:role/kubernetes-environment-PeerRoleDev-146YFE7DKI5GL
+      PeerRoleArn: arn:aws:iam::278942993584:role/kubernetes-environment-PeerRoleDev-146YFE7DKI5GL
       ValidationDomain: intapp.com
     prod:
-      PeerRoleArn: arn:aws:iam::382925334721:role/kubernetes-environment-PeerRoleProd-1MN9B7QSW26RW
+      PeerRoleArn: arn:aws:iam::278942993584:role/kubernetes-environment-PeerRoleProd-1MN9B7QSW26RW
       ValidationDomain: intapp.com
 
 Conditions:
   DevEnvironment: !Equals [ !Ref Environment, dev ]
 
 Resources:
-  ClusterStateStorage:
-    Type: "AWS::S3::Bucket"
-    Properties:
-      BucketName: !Join ["-", [ "k8s", "clusterstatestorage", !Ref "AWS::StackName", !Ref "AWS::Region",]]
-      LifecycleConfiguration:
-        Rules:
-          - Id: RemoveOldNonCurrent
-            NoncurrentVersionExpirationInDays: 720
-            Status: Enabled
-      VersioningConfiguration:
-        Status: Enabled
-      Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
-        - Key: ProductComponents
-          Value: S3
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
+#  ClusterStateStorage:
+#    Type: "AWS::S3::Bucket"
+#    Properties:
+#      BucketName: !Join ["-", [ "k8s", "clusterstatestorage", !Ref "AWS::StackName", !Ref "AWS::Region",]]
+#      LifecycleConfiguration:
+#        Rules:
+#          - Id: RemoveOldNonCurrent
+#            NoncurrentVersionExpirationInDays: 720
+#            Status: Enabled
+#      VersioningConfiguration:
+#        Status: Enabled
+#      Tags:
+#        - Key: Product
+#          Value: Kubernetes-cluster
+#        - Key: ProductComponents
+#          Value: S3
+#        - Key: Environment
+#          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
+#        - Key: Team
+#          Value: DevOps
+#        - Key: Contact
+#          Value: !Ref contactTag
   LogsStorage:
     Type: "AWS::S3::Bucket"
     Properties:
@@ -737,17 +737,17 @@ Resources:
       PolicyDocument:
         Statement:
           -
-            Sid: AccessFromIntappxdevListBucket
+            Sid: AccessFromAWSAccListBucket
             Action:
               - "s3:List*"
             Effect: Allow
             Resource:
               - !Join ["", ["arn:aws:s3:::", Ref: "LogsStorage"] ]
             Principal:
-              AWS: "arn:aws:iam::357128852511:root"
+              AWS: "arn:aws:iam::278942993584:root"
 
           -
-            Sid: AccessFromIntappxdevGetObjject
+            Sid: AccessFromAWSAccGetObject
             Action:
               - "s3:Get*"
               - "s3:List*"
@@ -755,7 +755,7 @@ Resources:
             Resource:
               - !Join ["", ["arn:aws:s3:::", Ref: "LogsStorage",  "/*" ]]
             Principal:
-              AWS: "arn:aws:iam::357128852511:root"
+              AWS: "arn:aws:iam::278942993584:root"
   VaultUser:
     Type: "AWS::IAM::User"
     Properties:
@@ -773,8 +773,8 @@ Resources:
 Outputs:
   VPCID:
     Value: !Ref VPC
-  ClusterStateStorage:
-    Value: !Join ["/", ["s3:/", !Ref ClusterStateStorage]]
+#  ClusterStateStorage:
+#    Value: !Join ["/", ["s3:/", !Ref ClusterStateStorage]]
   LogsStorage:
     Value: !Ref LogsStorage
   ThanosStorage:

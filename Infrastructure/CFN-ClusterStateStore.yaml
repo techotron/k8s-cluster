@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 bucket for the kops state store.
+
+Parameters:
+  Environment:
+    Description: Uses for resource tagging and select appropriate Policy for VPC Peering acknowledge
+    Type: String
+    AllowedValues:
+      - dev
+      - prod
+    Default: dev
+
+  contactTag:
+    Type: String
+    Description: value for the contact tag
+    Default: eddy
+
+Resources:
+  ClusterStateStorage:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Join ["-", [ "k8s", "clusterstatestorage", !Ref "AWS::StackName", !Ref "AWS::Region",]]
+      LifecycleConfiguration:
+        Rules:
+          - Id: RemoveOldNonCurrent
+            NoncurrentVersionExpirationInDays: 720
+            Status: Enabled
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Product
+          Value: Kubernetes-cluster
+        - Key: ProductComponents
+          Value: S3
+        - Key: Environment
+          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
+        - Key: Team
+          Value: DevOps
+        - Key: Contact
+          Value: !Ref contactTag
+
+Outputs:
+  ClusterStateStorage:
+    Value: !Join ["/", ["s3:/", !Ref ClusterStateStorage]]
