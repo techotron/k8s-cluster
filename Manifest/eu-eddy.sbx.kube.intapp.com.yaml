@@ -285,7 +285,7 @@ spec:
 #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
   image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
   machineType: t2.small
-  maxSize: 4
+  maxSize: 2
   minSize: 2
   nodeLabels:
     kops.k8s.io/instancegroup: nodes
