@@ -2,12 +2,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: tiller
-  namespace: ops
+  namespace: default
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: tiller-ops
+  name: tiller-default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -15,4 +15,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: tiller
-    namespace: ops
+    namespace: default

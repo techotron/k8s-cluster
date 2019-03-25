@@ -11,25 +11,25 @@
 # Dashboard password is: Password01 (it can be generated using htpasswd
 
 echo "[$(date)] - Applying namespace"
-kubectl apply -f ../Namespaces/ops.yaml
+kubectl apply -f ../Namespaces/default.yaml
 
 echo "[$(date)] - Setting up helm"
-kubectl apply -f ../Authorization/helm/helm_ops.yaml
+kubectl apply -f ../Authorization/helm/helm_default.yaml
 
 echo "[$(date)] - Installing tiller"
-helm init --service-account tiller --tiller-namespace ops
+helm init --service-account tiller --tiller-namespace=default
 
 echo "[$(date)] - Setting up nginx ingress controller"
-helm upgrade -i -f ../Helm/ingress-nginx/values.yaml --wait --timeout 300 ingress-nginx stable/nginx-ingress --tiller-namespace=ops
+helm upgrade -i -f ../Helm/ingress-nginx/values.yaml --wait --timeout 300 ingress-nginx stable/nginx-ingress --tiller-namespace=default
 
 # !!!NOTE!!!
 # Need to add AWS alias for each service to the ELB created in the above deployment
 
 echo "[$(date)] - Install grafana"
-helm upgrade -i -f ../Helm/grafana/values.yaml --wait --timeout 600 grafana stable/grafana --tiller-namespace=ops
+helm upgrade -i -f ../Helm/grafana/values.yaml --wait --timeout 600 grafana stable/grafana --tiller-namespace=default
 
 echo "[$(date)] - Install prometheus"
-helm upgrade -i -f ../Helm/prometheus/values.yaml --wait --timeout 600 prometheus stable/prometheus --tiller-namespace=ops
+helm upgrade -i -f ../Helm/prometheus/values.yaml --wait --timeout 600 prometheus stable/prometheus --tiller-namespace=default
 
 echo "[$(date)] - Install jenkins"
-helm upgrade -i -f ../Helm/jenkins/values.yaml --wait --timeout 600 jenkins stable/jenkins --tiller-namespace=ops
+helm upgrade -i -f ../Helm/jenkins/values.yaml --wait --timeout 600 jenkins stable/jenkins --tiller-namespace=default
