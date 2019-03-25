@@ -33,3 +33,6 @@ helm upgrade -i -f ../Helm/prometheus/values.yaml --wait --timeout 600 prometheu
 
 echo "[$(date)] - Install jenkins"
 helm upgrade -i -f ../Helm/jenkins/values.yaml --wait --timeout 600 jenkins stable/jenkins --tiller-namespace=default
+
+#simple-site
+#helm upgrade simple-site ../Helm/simple-site --namespace default --tiller-namespace=default --install
