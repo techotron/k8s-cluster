@@ -30,3 +30,6 @@ helm upgrade -i -f ../Helm/grafana/values.yaml --wait --timeout 600 grafana stab
 
 echo "[$(date)] - Install prometheus"
 helm upgrade -i -f ../Helm/prometheus/values.yaml --wait --timeout 600 prometheus stable/prometheus --tiller-namespace=ops
+
+echo "[$(date)] - Install jenkins"
+helm upgrade -i -f ../Helm/jenkins/values.yaml --wait --timeout 600 jenkins stable/jenkins --tiller-namespace=ops
