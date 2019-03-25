@@ -20,7 +20,7 @@ echo "[$(date)] - Installing tiller"
 helm init --service-account tiller --tiller-namespace ops
 
 echo "[$(date)] - Setting up nginx ingress controller"
-helm upgrade -i -f ../Helm/ingress-nginx/values.yaml stable/nginx-ingress --name ingress-nginx --tiller-namespace=ops
+helm upgrade -i -f ../Helm/ingress-nginx/values.yaml --wait --timeout 300 ingress-nginx stable/nginx-ingress --tiller-namespace=ops
 
 # !!!NOTE!!!
 # Need to add AWS alias for each service to the ELB created in the above deployment
