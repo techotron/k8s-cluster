@@ -92,9 +92,9 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   labels: {}
-  path: /
+  path: /grafana
   hosts:
-    - grafana.eu.sbx.kube.intapp.com
+    - apps.eu.sbx.kube.intapp.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -210,7 +210,19 @@ plugins: []
 ## Configure grafana datasources
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
 ##
-datasources: {}
+datasources: {
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.ops.svc.cluster.local
+      access: proxy
+      is_default: true
+      editable: true
+      org_id: 1
+      version: 1
+}
 #  datasources.yaml:
 #    apiVersion: 1
 #    datasources:
@@ -262,7 +274,11 @@ dashboardProviders: {}
 ##
 ## dashboards per provider, use provider name as key.
 ##
-dashboards: {}
+dashboards: {
+  default:
+    node-exporter-dashboard:
+      file: dashboards/node_exporter_dashboard.json
+}
   # default:
   #   some-dashboard:
   #     json: |
@@ -306,6 +322,9 @@ grafana.ini:
     mode: console
   grafana_net:
     url: https://grafana.net
+  server:
+    root_url: http://apps.eu.sbx.kube.intapp.com/grafana/
+    protocol: http
 ## LDAP Authentication can be enabled with the following values on grafana.ini
 ## NOTE: Grafana will fail to start if the value for ldap.toml is invalid
   # auth.ldap:
