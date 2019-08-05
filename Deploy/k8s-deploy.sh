@@ -8,20 +8,17 @@ else
     DEPLOY_TYPE="create"
 fi
 
-AWS_PROFILE="intapp-devopssbx_eddy.snow@intapp.com"
+AWS_PROFILE="snowco"
 AWS_REGION="eu-west-1"
-K8S_IAM_NAME="eddy-k8s-iam"
-K8S_ENV_NAME="eddy-k8s-environment"
+K8S_STACK_NAME="k8s-lab"
+K8S_IAM_NAME="$K8S_STACK_NAME-iam"
+K8S_ENV_NAME="$K8S_STACK_NAME-env"
 KOPS_CONFIG_VERSION=$(date +%F_%H%M%S)
-S3_CONFIG_BUCKET="s3://278942993584-eddy-scratch/git/k8s-cluster/"
-S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/278942993584-eddy-scratch/git/k8s-cluster/"
-CLUSTER_NAME="eddy.eu.sbx.kube.intapp.com"
-CLUSTER_STATE_BUCKET="k8s-clusterstatestorage-eddy-k8s-environment-eu-west-1"
+S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/722777194664-kops-eu-west-1/git/k8s-cluster/"
+CLUSTER_NAME="lab.kube.esnow.uk"
+CLUSTER_STATE_BUCKET="722777194664-k8s-clst-state-$K8S_ENV_NAME-$AWS_REGION"
 
 echo "[$(date)] - Deploying stacks to region: $AWS_REGION"
-echo "[$(date)] - Uploading templates to s3"
-
-aws s3 cp ../ $S3_CONFIG_BUCKET --recursive --profile $AWS_PROFILE --region $AWS_REGION --exclude "*.git/*"
 
 # Might need to create manually with a passphrase: ssh-keygen -t rsa -b 4096 -f ~/.ssh/k8s_id_rsa
 echo "[$(date)] - Creating new PKI secret unless it already exists"
@@ -31,55 +28,40 @@ if [ ! -f ~/.ssh/k8s_id_rsa ]; then
 fi
 
 echo "[$(date)] - iam stack"
-if [ ! $(aws cloudformation describe-stacks --region $AWS_REGION --profile $AWS_PROFILE | jq '.Stacks[].StackName' | grep $K8S_IAM_NAME) ]; then
-    echo "[$(date)] - Creating $K8S_IAM_NAME stack"
-    aws cloudformation create-stack --stack-name $K8S_IAM_NAME --template-url $S3_CONFIG_BUCKET_URL"Infrastructure/CFN-kops.yaml" --parameters ParameterKey=AccessKeyRotation,ParameterValue=0 --profile $AWS_PROFILE --region $AWS_REGION --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
-else
-    echo "[$(date)] - Updating $K8S_IAM_NAME stack"
-    aws cloudformation update-stack --stack-name $K8S_IAM_NAME --template-url $S3_CONFIG_BUCKET_URL"Infrastructure/CFN-kops.yaml" --parameters ParameterKey=AccessKeyRotation,ParameterValue=0 --profile $AWS_PROFILE --region $AWS_REGION --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
-fi
+aws cloudformation deploy \
+    --stack-name $K8S_IAM_NAME \
+    --template-file ../Infrastructure/CFN-kops.yaml \
+    --parameter-overrides \
+        AccessKeyRotation=0 \
+    --profile $AWS_PROFILE \
+    --region $AWS_REGION \
+    --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
 
 echo "[$(date)] - environment stack"
-if [ ! $(aws cloudformation describe-stacks --region $AWS_REGION --profile $AWS_PROFILE | jq '.Stacks[].StackName' | grep $K8S_ENV_NAME) ]; then
-    echo "[$(date)] - Creating $K8S_ENV_NAME stack"
-    aws cloudformation create-stack --stack-name $K8S_ENV_NAME \
-        --template-url $S3_CONFIG_BUCKET_URL"Infrastructure/CFN-Environment.yaml" \
-        --parameters \
-            ParameterKey=Network,ParameterValue="10.10" \
-            ParameterKey=KubernetesDNS,ParameterValue="eu.sbx.kube.intapp.com" \
-            ParameterKey=Environment,ParameterValue="dev" \
-            ParameterKey=LoggerAccessKeyRotation,ParameterValue=0 \
-            ParameterKey=contactTag,ParameterValue="eddy.snow@intapp.com" \
-        --profile $AWS_PROFILE \
-        --region $AWS_REGION \
-        --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
-else
-    echo "[$(date)] - Updating $K8S_ENV_NAME stack"
-    aws cloudformation update-stack --stack-name $K8S_ENV_NAME \
-        --template-url $S3_CONFIG_BUCKET_URL"Infrastructure/CFN-Environment.yaml" \
-        --parameters \
-            ParameterKey=Network,ParameterValue="10.10" \
-            ParameterKey=KubernetesDNS,ParameterValue="eu.sbx.kube.intapp.com" \
-            ParameterKey=Environment,ParameterValue="dev" \
-            ParameterKey=LoggerAccessKeyRotation,ParameterValue=0 \
-            ParameterKey=contactTag,ParameterValue="eddy.snow@intapp.com" \
-        --profile $AWS_PROFILE \
-        --region $AWS_REGION \
-        --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
-fi
+aws cloudformation deploy --stack-name $K8S_ENV_NAME \
+    --template-file ../Infrastructure/CFN-Environment.yaml \
+    --parameter-overrides \
+        Network="10.10" \
+        KubernetesDNS="kube.esnow.uk" \
+        Environment="dev" \
+        LoggerAccessKeyRotation=0 \
+        contactTag="eddysnow@googlemail.com" \
+    --profile $AWS_PROFILE \
+    --region $AWS_REGION \
+    --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
 
 echo "[$(date)] - Exporting KOPS IAM credentials for KOPS related AWS tasks"
 export AWS_ACCESS_KEY_ID=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="AccessKeyId").OutputValue')
 export AWS_SECRET_ACCESS_KEY=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="SecretAccessKey").OutputValue')
 
-echo "[$(date)] - Backing up old KOPS configuration"
-aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
-aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME --profile $AWS_PROFILE
-aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
-aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
+#echo "[$(date)] - Backing up old KOPS configuration"
+#aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
+#aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME --profile $AWS_PROFILE
+#aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
+#aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
-kops create -f ../Manifest/eu-eddy.sbx.kube.intapp.com.yaml --state="s3://"$CLUSTER_STATE_BUCKET
+kops create -f ../Manifest/lab.kube.esnow.uk.yaml --state="s3://"$CLUSTER_STATE_BUCKET
 
 if [ "$DEPLOY_TYPE" = "update" ]; then
     echo "[$(date)] - This is an update, no need to create a new pki secret"

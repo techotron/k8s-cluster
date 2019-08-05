@@ -1,31 +1,31 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: VPC, S3 bucket, IAM, DBSubnet for Kubernetes cluster.
-Metadata:
-  AWS::CloudFormation::Interface:
-    ParameterGroups:
-      -
-        Label:
-          default: "Environment type"
-        Parameters:
-          - Environment
-      -
-        Label:
-          default: "VPC parameters"
-        Parameters:
-          - Network
-      -
-        Label:
-          default: "Kubernetes parameters"
-        Parameters:
-          -  KubernetesDNS
-
-    ParameterLabels:
-      Network:
-        default: "CIDR block"
-      KubernetesDNS:
-        default: "Hosted Zone For Kubernetes Cluster"
-      Environment:
-        default: "DEV/PROD"
+#Metadata:
+#  AWS::CloudFormation::Interface:
+#    ParameterGroups:
+#      -
+#        Label:
+#          default: "Environment type"
+#        Parameters:
+#          - Environment
+#      -
+#        Label:
+#          default: "VPC parameters"
+#        Parameters:
+#          - Network
+#      -
+#        Label:
+#          default: "Kubernetes parameters"
+#        Parameters:
+#          -  KubernetesDNS
+#
+#    ParameterLabels:
+#      Network:
+#        default: "CIDR block"
+#      KubernetesDNS:
+#        default: "Hosted Zone For Kubernetes Cluster"
+#      Environment:
+#        default: "DEV/PROD"
 
 Parameters:
   Network:
@@ -36,7 +36,7 @@ Parameters:
   KubernetesDNS:
     Type: String
     Description: Hosted zone for Kubernetes DNS.
-    Default: us.dev.kube.intapp.com
+    Default: kube.esnow.uk
 
   Environment:
     Description: Uses for resource tagging and select appropriate Policy for VPC Peering acknowledge
@@ -57,11 +57,9 @@ Parameters:
 Mappings:
   Environment:
     dev:
-      PeerRoleArn: arn:aws:iam::382925334721:role/kubernetes-environment-PeerRoleDev-146YFE7DKI5GL
-      ValidationDomain: intapp.com
+      ValidationDomain: kube.esnow.uk
     prod:
-      PeerRoleArn: arn:aws:iam::382925334721:role/kubernetes-environment-PeerRoleProd-1MN9B7QSW26RW
-      ValidationDomain: intapp.com
+      ValidationDomain: kube.esnow.uk
 
 Conditions:
   DevEnvironment: !Equals [ !Ref Environment, dev ]
@@ -70,7 +68,7 @@ Resources:
   ClusterStateStorage:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Join ["-", [ "k8s", "clusterstatestorage", !Ref "AWS::StackName", !Ref "AWS::Region",]]
+      BucketName: !Join ["-", [ !Ref "AWS::AccountId", "k8s-clst-state", !Ref "AWS::StackName", !Ref "AWS::Region"]]
       LifecycleConfiguration:
         Rules:
           - Id: RemoveOldNonCurrent
@@ -92,7 +90,7 @@ Resources:
   LogsStorage:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Join ["-", [ "k8s", "clusterstatestorage", !Ref "AWS::StackName", !Ref "AWS::Region", "logs"]]
+      BucketName: !Join ["-", [ !Ref "AWS::AccountId", "k8s-clst-state", !Ref "AWS::StackName", !Ref "AWS::Region", "logs"]]
       Tags:
         - Key: Product
           Value: Kubernetes-cluster
@@ -107,7 +105,7 @@ Resources:
   ThanosStorage:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: !Join ["-", [ "k8s", "thanos", !Ref "AWS::StackName", !Ref "AWS::Region"]]
+      BucketName: !Join ["-", [ !Ref "AWS::AccountId", "k8s-clst-state", !Ref "AWS::StackName", !Ref "AWS::Region", "thanos"]]
       Tags:
         - Key: Product
           Value: Kubernetes-cluster
@@ -219,6 +217,7 @@ Resources:
     Type: "AWS::CertificateManager::Certificate"
     Properties:
       DomainName: !Join ["", ["*.", !Ref KubernetesDNS]]
+      ValidationMethod: DNS
       SubjectAlternativeNames:
         - !Ref KubernetesDNS
       DomainValidationOptions:
@@ -239,28 +238,6 @@ Resources:
           Value: Kubernetes-cluster
         - Key: Contact
           Value: !Ref contactTag
-
-  # Isn't possible to create peering in case VPC in different regions:
-#  VPCpeerToCICD:
-#    Type: "AWS::EC2::VPCPeeringConnection"
-#    Properties:
-#      PeerVpcId: vpc-467e4d3d
-#      Tags:
-#        - Key: Product
-#          Value: Kubernetes-cluster
-#        - Key: ProductComponents
-#          Value: VPC-Peering
-#        - Key: Environment
-#          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-#        - Key: Team
-#          Value: DevOps
-#        - Key: Name
-#          Value: Kubernetes-cluster
-#        - Key: Contact
-#          Value: !Ref contactTag
-#      VpcId: !Ref VPC
-#      PeerOwnerId: 382925334721
-#      PeerRoleArn: !FindInMap [Environment, !Ref Environment, PeerRoleArn]
 
   LoggerUser:
     Type: "AWS::IAM::User"
@@ -737,17 +714,17 @@ Resources:
       PolicyDocument:
         Statement:
           -
-            Sid: AccessFromIntappxdevListBucket
+            Sid: AccessFromSnowcoListBucket
             Action:
               - "s3:List*"
             Effect: Allow
             Resource:
               - !Join ["", ["arn:aws:s3:::", Ref: "LogsStorage"] ]
             Principal:
-              AWS: "arn:aws:iam::357128852511:root"
+              AWS: "arn:aws:iam::722777194664:root"
 
           -
-            Sid: AccessFromIntappxdevGetObjject
+            Sid: AccessFromSnowcoGetObject
             Action:
               - "s3:Get*"
               - "s3:List*"
@@ -755,7 +732,7 @@ Resources:
             Resource:
               - !Join ["", ["arn:aws:s3:::", Ref: "LogsStorage",  "/*" ]]
             Principal:
-              AWS: "arn:aws:iam::357128852511:root"
+              AWS: "arn:aws:iam::722777194664:root"
   VaultUser:
     Type: "AWS::IAM::User"
     Properties:
