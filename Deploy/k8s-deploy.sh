@@ -54,11 +54,11 @@ echo "[$(date)] - Exporting KOPS IAM credentials for KOPS related AWS tasks"
 export AWS_ACCESS_KEY_ID=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="AccessKeyId").OutputValue')
 export AWS_SECRET_ACCESS_KEY=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="SecretAccessKey").OutputValue')
 
-#echo "[$(date)] - Backing up old KOPS configuration"
-#aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
-#aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME --profile $AWS_PROFILE
-#aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
-#aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
+echo "[$(date)] - Backing up old KOPS configuration"
+aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
+aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME --profile $AWS_PROFILE
+aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
+aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
 kops create -f ../Manifest/lab.kube.esnow.uk.yaml --state="s3://"$CLUSTER_STATE_BUCKET
@@ -71,4 +71,5 @@ elif [ "$DEPLOY_TYPE" = "create" ]; then
 fi
 
 echo "[$(date)] - Deploy the cluster"
-kops update cluster $CLUSTER_NAME --yes --state="s3://"$CLUSTER_STATE_BUCKET
+kops update cluster $CLUSTER_NAME --yes \
+    --state="s3://"$CLUSTER_STATE_BUCKET

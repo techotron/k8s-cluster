@@ -67,10 +67,10 @@ spec:
     - 0.0.0.0/0
 #  kubernetesVersion: 1.9.10
   kubernetesVersion: 1.10.12
-  masterPublicName: api-lab.kube.esnow.uk
-#  masterInternalName: api-lab.kube.esnow.uk
+  masterPublicName: api.lab.kube.esnow.uk
+#  masterInternalName: api.lab.kube.esnow.uk
   networkCIDR: 10.10.0.0/16
-  networkID: vpc-0f647c5f415705a11
+  networkID: vpc-0da368d2870bdf74c
   networking:
     canal: {}
   nonMasqueradeCIDR: 100.64.0.0/10
@@ -103,7 +103,7 @@ spec:
     zone: eu-west-1c
   topology:
     bastion:
-      bastionPublicName: bastion-lab.kube.esnow.uk
+      bastionPublicName: bastion.lab.kube.esnow.uk
     dns:
       type: Public
     masters: private
