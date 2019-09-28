@@ -20,9 +20,11 @@ ingress:
   }
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+# Only a root path of "/" works here because there is no config map to add the location to an nginx config.
   path: /
   hosts:
-    - apps.eu.sbx.kube.intapp.com
+#    - apps.eu.sbx.kube.intapp.com
+    - temp.cluster.kube
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
