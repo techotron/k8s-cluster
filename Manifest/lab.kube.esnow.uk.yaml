@@ -27,6 +27,7 @@ spec:
     auditPolicyFile: /srv/kubernetes/audit.yaml
   sshAccess:
     - 82.25.28.5
+    - 164.39.87.162
   channel: stable
   cloudLabels:
     Environment: DEV
@@ -42,30 +43,17 @@ spec:
     - encryptedVolume: true
       instanceGroup: master-eu-west-1a
       name: a
-#    - encryptedVolume: true
-#      instanceGroup: master-eu-west-1b
-#      name: b
-#    - encryptedVolume: true
-#      instanceGroup: master-eu-west-1c
-#      name: c
     name: main
   - etcdMembers:
     - encryptedVolume: true
       instanceGroup: master-eu-west-1a
       name: a
-#    - encryptedVolume: true
-#      instanceGroup: master-eu-west-1b
-#      name: b
-#    - encryptedVolume: true
-#      instanceGroup: master-eu-west-1c
-#      name: c
     name: events
   iam:
     allowContainerRegistry: true
     legacy: false
   kubernetesApiAccess:
     - 0.0.0.0/0
-#  kubernetesVersion: 1.9.10
   kubernetesVersion: 1.10.12
   masterPublicName: api.lab.kube.esnow.uk
 #  masterInternalName: api.lab.kube.esnow.uk
@@ -212,7 +200,7 @@ metadata:
 spec:
 #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
   image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
-  machineType: t2.medium
+  machineType: t3.medium
   maxSize: 1
   minSize: 1
   nodeLabels:
@@ -221,50 +209,6 @@ spec:
   rootVolumeSize: 64
   subnets:
   - eu-west-1a
-
-#---
-#
-#apiVersion: kops/v1alpha2
-#kind: InstanceGroup
-#metadata:
-#  creationTimestamp: null
-#  labels:
-#    kops.k8s.io/cluster: lab.kube.esnow.uk
-#  name: master-eu-west-1b
-#spec:
-##  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-#  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
-#  machineType: t2.medium
-#  maxSize: 1
-#  minSize: 1
-#  nodeLabels:
-#    kops.k8s.io/instancegroup: master-eu-west-1b
-#  role: Master
-#  rootVolumeSize: 64
-#  subnets:
-#  - eu-west-1b
-#
-#---
-#
-#apiVersion: kops/v1alpha2
-#kind: InstanceGroup
-#metadata:
-#  creationTimestamp: null
-#  labels:
-#    kops.k8s.io/cluster: lab.kube.esnow.uk
-#  name: master-eu-west-1c
-#spec:
-##  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-#  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
-#  machineType: t2.medium
-#  maxSize: 1
-#  minSize: 1
-#  nodeLabels:
-#    kops.k8s.io/instancegroup: master-eu-west-1c
-#  role: Master
-#  rootVolumeSize: 64
-#  subnets:
-#  - eu-west-1c
 
 ---
 
@@ -278,7 +222,7 @@ metadata:
 spec:
 #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
   image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
-  machineType: t2.large
+  machineType: t3.large
   maxSize: 3
   minSize: 3
   nodeLabels:
@@ -302,7 +246,7 @@ metadata:
 spec:
 #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
   image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
-  machineType: t2.micro
+  machineType: t3.nano
   maxSize: 1
   minSize: 1
   nodeLabels:
