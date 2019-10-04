@@ -31,13 +31,18 @@ The cost of Environement and Kops stacks is next to nothing so it's convenient t
 Defined in the ./Manifest/lab.kube.esnow.uk.yaml file
 
 
+## Kops image:k8s version relationship
+
+https://github.com/kubernetes/kops/blob/master/channels/stable
+
 
 
 
 
 
 # TODO
-1. Deploy Jenkins Helm chart: https://github.com/helm/charts/tree/master/stable/jenkins
-2. Create job to deploy helm charts
-3. Deploy Prometheus helm chart: https://github.com/helm/charts/tree/master/stable/prometheus
-4. Create cluster auto scaler: https://github.com/helm/charts/tree/master/stable/cluster-autoscaler
+- Deploy Jenkins Helm chart: https://github.com/helm/charts/tree/master/stable/jenkins
+- Create job to deploy helm charts
+- Deploy Prometheus helm chart: https://github.com/helm/charts/tree/master/stable/prometheus
+- Create cluster auto scaler: https://github.com/helm/charts/tree/master/stable/cluster-autoscaler
+- Automate kubernetes version to image relationship lookup

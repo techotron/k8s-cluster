@@ -66,8 +66,7 @@ spec:
     legacy: false
   kubernetesApiAccess:
     - 0.0.0.0/0
-  #  kubernetesVersion: 1.9.10
-  kubernetesVersion: 1.10.12
+  kubernetesVersion: 1.13.0
   masterPublicName: api.lab.kube.esnow.uk
   #  masterInternalName: api.lab.kube.esnow.uk
   networkCIDR: 10.10.0.0/16
@@ -211,8 +210,7 @@ metadata:
     kops.k8s.io/cluster: lab.kube.esnow.uk
   name: master-eu-west-1a
 spec:
-  #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
+  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
   machineType: t2.medium
   maxSize: 1
   minSize: 1
@@ -234,7 +232,7 @@ metadata:
   name: master-eu-west-1b
 spec:
 #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
+  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
   machineType: t2.medium
   maxSize: 1
   minSize: 1
@@ -256,7 +254,7 @@ metadata:
   name: master-eu-west-1c
 spec:
 #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
+  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
   machineType: t2.medium
   maxSize: 1
   minSize: 1
@@ -277,8 +275,7 @@ metadata:
     kops.k8s.io/cluster: lab.kube.esnow.uk
   name: nodes
 spec:
-  #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
+  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
   machineType: t2.large
   maxSize: 3
   minSize: 3
@@ -301,8 +298,7 @@ metadata:
     kops.k8s.io/cluster: lab.kube.esnow.uk
   name: bastions
 spec:
-  #  image: kope.io/k8s-1.8-debian-jessie-amd64-hvm-ebs-2018-02-08
-  image: kope.io/k8s-1.10-debian-jessie-amd64-hvm-ebs-2018-08-17
+  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
   machineType: t2.micro
   maxSize: 1
   minSize: 1
