@@ -26,8 +26,8 @@ ingress:
 # Only a root path of "/" works here because there is no config map to add the location to an nginx config.
   path: /
   hosts:
-#    - apps.eu.sbx.kube.intapp.com
-    - temp.cluster.kube
+    - test.cluster.kube
+    - test.lab.kube.esnow.uk
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
