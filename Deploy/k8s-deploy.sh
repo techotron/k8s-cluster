@@ -4,6 +4,8 @@ if [ "$1" = "update" ]; then
     DEPLOY_TYPE="update"
 elif [ "$1" = "create" ]; then
     DEPLOY_TYPE="create"
+elif [ "$1" = "create_deps" ]; then
+    DEPLOY_TYPE="create_deps"
 else
     DEPLOY_TYPE="create"
 fi
@@ -13,10 +15,12 @@ AWS_REGION="eu-west-1"
 K8S_STACK_NAME="k8s-lab"
 K8S_IAM_NAME="$K8S_STACK_NAME-iam"
 K8S_ENV_NAME="$K8S_STACK_NAME-env"
+K8S_DNS_DOMAIN="kube.esnow.uk"
 KOPS_CONFIG_VERSION=$(date +%F_%H%M%S)
-S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/722777194664-kops-eu-west-1/git/k8s-cluster/"
+#S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/722777194664-kops-eu-west-1/git/k8s-cluster/"
 CLUSTER_NAME="lab.kube.esnow.uk"
-CLUSTER_STATE_BUCKET="722777194664-k8s-clst-state-$K8S_ENV_NAME-$AWS_REGION"
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text --profile $AWS_PROFILE)
+CLUSTER_STATE_BUCKET="$AWS_ACCOUNT_ID-k8s-clst-state-$K8S_ENV_NAME-$AWS_REGION"
 
 echo "[$(date)] - Deploying stacks to region: $AWS_REGION"
 
@@ -24,7 +28,7 @@ echo "[$(date)] - Deploying stacks to region: $AWS_REGION"
 echo "[$(date)] - Creating new PKI secret unless it already exists"
 if [ ! -f ~/.ssh/k8s_id_rsa ]; then
     echo "[$(date)] - Secret not found, creating now"
-    ssh-keygen -t rsa -N 'k8s_id_rsa' -f ~/.ssh/k8s_id_rsa
+    ssh-keygen -t rsa -b 4096 -N 'k8s_id_rsa' -f ~/.ssh/k8s_id_rsa
 fi
 
 echo "[$(date)] - iam stack"
@@ -42,10 +46,9 @@ aws cloudformation deploy --stack-name $K8S_ENV_NAME \
     --template-file ../Infrastructure/CFN-Environment.yaml \
     --parameter-overrides \
         Network="10.10" \
-        KubernetesDNS="kube.esnow.uk" \
+        KubernetesDNS=$K8S_DNS_DOMAIN \
         Environment="dev" \
         LoggerAccessKeyRotation=0 \
-        contactTag="eddysnow@googlemail.com" \
     --profile $AWS_PROFILE \
     --region $AWS_REGION \
     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM;
@@ -62,6 +65,7 @@ aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
 kops create -f ../Manifest/lab.kube.esnow.uk.yaml --state="s3://"$CLUSTER_STATE_BUCKET
+
 
 if [ "$DEPLOY_TYPE" = "update" ]; then
     echo "[$(date)] - This is an update, no need to create a new pki secret"

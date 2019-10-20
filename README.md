@@ -12,6 +12,10 @@ Run the `./k8s-deploy.sh` to deploy a cluster in your AWS account. Some variable
 
 Run the `./k8s-setup.sh` to setup the cluster with the ops namespace and install helm/tiller. 
 
+### Route53 Notes
+
+If you're using a child domain (such as "kube" in the Route53 domain, "esnow.uk"), you'll need to make sure you add the name servers of the child domain, in the parent domain. Without this, the record which validates the ACM certificate won't get verified.
+
 ## Update K8s cluster
 
 This will update changes to the CFN stacks and kops manifest

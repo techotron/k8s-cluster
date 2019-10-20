@@ -1,42 +1,16 @@
 AWSTemplateFormatVersion: "2010-09-09"
+
 Description: VPC, S3 bucket, IAM, DBSubnet for Kubernetes cluster.
-#Metadata:
-#  AWS::CloudFormation::Interface:
-#    ParameterGroups:
-#      -
-#        Label:
-#          default: "Environment type"
-#        Parameters:
-#          - Environment
-#      -
-#        Label:
-#          default: "VPC parameters"
-#        Parameters:
-#          - Network
-#      -
-#        Label:
-#          default: "Kubernetes parameters"
-#        Parameters:
-#          -  KubernetesDNS
-#
-#    ParameterLabels:
-#      Network:
-#        default: "CIDR block"
-#      KubernetesDNS:
-#        default: "Hosted Zone For Kubernetes Cluster"
-#      Environment:
-#        default: "DEV/PROD"
 
 Parameters:
   Network:
-    Description: "Network/16 from CIDR VPC blocks 10.0.0.0/8. Should be unique accross all deployment. Example: 10.2"
+    Description: "Network/16 from CIDR VPC blocks 10.0.0.0/8. Should be unique across all deployment. Example: 10.2"
     Type: String
     AllowedPattern: '((\d{1,3})\.)\d{1,3}'
 
   KubernetesDNS:
     Type: String
     Description: Hosted zone for Kubernetes DNS.
-    Default: kube.esnow.uk
 
   Environment:
     Description: Uses for resource tagging and select appropriate Policy for VPC Peering acknowledge
@@ -50,19 +24,10 @@ Parameters:
     Description: Incrementing this value notifies AWS CloudFormation that you want to rotate your access key.
     Default: 0
 
-  contactTag:
-    Type: String
-    Description: value for the contact tag
-
 Mappings:
   Environment:
     dev:
       ValidationDomain: kube.esnow.uk
-    prod:
-      ValidationDomain: kube.esnow.uk
-
-Conditions:
-  DevEnvironment: !Equals [ !Ref Environment, dev ]
 
 Resources:
   ClusterStateStorage:
@@ -77,46 +42,30 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: S3
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
+
   LogsStorage:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Join ["-", [ !Ref "AWS::AccountId", "k8s-clst-state", !Ref "AWS::StackName", !Ref "AWS::Region", "logs"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: Logs
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
+
   ThanosStorage:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Join ["-", [ !Ref "AWS::AccountId", "k8s-clst-state", !Ref "AWS::StackName", !Ref "AWS::Region", "thanos"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: Thanos
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
 
   KubernetesHostedZone:
     Type: "AWS::Route53::HostedZone"
@@ -125,16 +74,10 @@ Resources:
         Comment:
           Kuburnetes Hostested Zone
       HostedZoneTags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: S3
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
       Name: !Ref KubernetesDNS
 
   VPC:
@@ -146,16 +89,10 @@ Resources:
       Tags:
         - Key: Name
           Value: "k8s-cluster"
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: VPC
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
 
   IGW:
     Type: "AWS::EC2::InternetGateway"
@@ -169,10 +106,6 @@ Resources:
           Value: VPC
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
 
   RouteTablePublic:
     Type: "AWS::EC2::RouteTable"
@@ -181,16 +114,10 @@ Resources:
       Tags:
         - Key: Name
           Value: "k8s-cluster-public"
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: VPC
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
 
   GatewayAttach:
     Type: "AWS::EC2::VPCGatewayAttachment"
@@ -226,18 +153,12 @@ Resources:
         - DomainName: !Join ["", ["*.", !Ref KubernetesDNS]]
           ValidationDomain: !FindInMap [Environment, !Ref Environment, ValidationDomain]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: Certificate
         - Key: Environment
           Value:  !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: Kubernetes-cluster
-        - Key: Contact
-          Value: !Ref contactTag
 
   LoggerUser:
     Type: "AWS::IAM::User"
@@ -299,18 +220,12 @@ Resources:
         - !Ref PrivateRDSSubnetGroup1b
         - !Ref PrivateRDSSubnetGroup1c
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: Kubernetes-cluster
-        - Key: Contact
-          Value: !Ref contactTag
 
   PrivateRDSSubnetGroup1a:
     Type: "AWS::EC2::Subnet"
@@ -320,14 +235,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".20.0/22" ]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -336,8 +247,6 @@ Resources:
               - 0
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   PrivateRDSSubnetGroup1b:
@@ -348,14 +257,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".24.0/22"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
             - '-'
@@ -364,8 +269,6 @@ Resources:
                 - 1
                 - Fn::GetAZs: !Ref 'AWS::Region'
               - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   PrivateRDSSubnetGroup1c:
@@ -376,14 +279,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".28.0/22"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -392,8 +291,6 @@ Resources:
               - 2
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPrivateSubnetGroup1a:
@@ -404,14 +301,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".249.0/24" ]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -420,8 +313,6 @@ Resources:
               - 0
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPrivateSubnetGroup1b:
@@ -432,14 +323,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".250.0/24"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -448,8 +335,6 @@ Resources:
               - 1
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPrivateSubnetGroup1c:
@@ -460,14 +345,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".251.0/24"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -476,8 +357,6 @@ Resources:
               - 2
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPublicSubnetGroup1a:
@@ -488,14 +367,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".252.0/24" ]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -504,8 +379,6 @@ Resources:
               - 0
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPublicSubnetGroup1b:
@@ -516,14 +389,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".253.0/24"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -532,8 +401,6 @@ Resources:
               - 1
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPublicSubnetGroup1c:
@@ -544,14 +411,10 @@ Resources:
         - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: !Join ["", [ !Ref Network, ".254.0/24"]]
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: RDS
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
         - Key: Name
           Value: !Join
           - '-'
@@ -560,8 +423,6 @@ Resources:
               - 2
               - Fn::GetAZs: !Ref 'AWS::Region'
             - !Ref KubernetesDNS
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   NotK8sPublicSubnetGroupAssociate1a:
@@ -616,21 +477,14 @@ Resources:
           FromPort: "5432"
           ToPort: "5432"
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: ProductComponents
           Value: VPC-Peering
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   ExtraSecuritytoRDSforDev:
     Type: AWS::EC2::SecurityGroupIngress
-    Condition: DevEnvironment
     Properties:
       CidrIp: !Join [".",[!Ref Network, "128.0/18"]]
       Description: "Additional Ip range for Kubernetes Cluster Nodes for development environment"
@@ -656,19 +510,12 @@ Resources:
           ToPort: 443
           CidrIp: 0.0.0.0/0
       Tags:
-        - Key: Product
-          Value: Kubernetes-cluster
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Team
-          Value: DevOps
-        - Key: Contact
-          Value: !Ref contactTag
       VpcId: !Ref VPC
 
   LambdaSecurityGroupRDS:
     Type: AWS::EC2::SecurityGroupEgress
-    Condition: DevEnvironment
     Properties:
       DestinationSecurityGroupId: !GetAtt RDSsSecurityGroup.GroupId
       Description: "Allow outbound to RDS"
@@ -683,12 +530,8 @@ Resources:
       GroupName: Kubernetes-cluster-notk8s-private
       GroupDescription: Not k8s application.
       Tags:
-      - Key: Product
-        Value: Kubernetes-cluster
       - Key: Environment
         Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      - Key: Team
-        Value: DevOps
       VpcId: !Ref VPC
 
   NotK8sPublicSecurityGroup:
@@ -697,14 +540,8 @@ Resources:
       GroupName: Kubernetes-cluster-notk8s-public
       GroupDescription: Not k8s application.
       Tags:
-      - Key: Product
-        Value: Kubernetes-cluster
       - Key: Environment
         Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      - Key: Team
-        Value: DevOps
-      - Key: Contact
-        Value: !Ref contactTag
       VpcId: !Ref VPC
 
   LogsBucketPolicy:
@@ -713,8 +550,7 @@ Resources:
       Bucket: !Ref LogsStorage
       PolicyDocument:
         Statement:
-          -
-            Sid: AccessFromSnowcoListBucket
+          - Sid: AccessFromSnowcoListBucket
             Action:
               - "s3:List*"
             Effect: Allow
@@ -723,8 +559,7 @@ Resources:
             Principal:
               AWS: "arn:aws:iam::722777194664:root"
 
-          -
-            Sid: AccessFromSnowcoGetObject
+          - Sid: AccessFromSnowcoGetObject
             Action:
               - "s3:Get*"
               - "s3:List*"
@@ -733,6 +568,7 @@ Resources:
               - !Join ["", ["arn:aws:s3:::", Ref: "LogsStorage",  "/*" ]]
             Principal:
               AWS: "arn:aws:iam::722777194664:root"
+
   VaultUser:
     Type: "AWS::IAM::User"
     Properties:
@@ -745,7 +581,6 @@ Resources:
     Properties:
       Status: Active
       UserName: !Ref VaultUser
-
 
 Outputs:
   VPCID:

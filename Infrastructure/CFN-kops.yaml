@@ -1,7 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: >
-  Template is aimed to create necessary permission for kops and prepeare aws account for deploy
+Description: Template is aimed to create necessary permissions for kops and prepeare aws account for deployment
 
 Parameters:
   AccessKeyRotation:
@@ -21,9 +20,6 @@ Resources:
         - "arn:aws:iam::aws:policy/IAMFullAccess"
         - "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
       Path: "/"
-#      TODO: Consider to replace ManagedPolicyArns with definae policeis
-#      Policies:
-#        - Policies
   KopsUser:
     Type: "AWS::IAM::User"
     Properties:

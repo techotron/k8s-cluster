@@ -15,10 +15,10 @@ spec:
       # workaround for https://github.com/kelseyhightower/kubernetes-the-hard-way/issues/276
       # kops run api-server with --admission-control=Initializers
       admissionregistration.k8s.io/v1alpha1: "true"
-    oidcIssuerURL: https://keycloak.intapp.com/auth/realms/master
-    oidcClientID: k8s-dev     # OIDC client in Keycloak master realm
-    oidcUsernameClaim: email
-    oidcGroupsClaim: groups
+#    oidcIssuerURL: https://keycloak.intapp.com/auth/realms/master
+#    oidcClientID: k8s-dev     # OIDC client in Keycloak master realm
+#    oidcUsernameClaim: email
+#    oidcGroupsClaim: groups
     # audit logs
     auditLogPath: /var/log/kube-apiserver-audit.log
     auditLogMaxAge: 10
@@ -32,8 +32,6 @@ spec:
     Environment: DEV
     ProductComponents: EC2
     Product: Kubernetes-cluster
-    Team: DevOps
-    Contact: eddysnow@googlemail.com
   cloudProvider: aws
   configBase: s3://722777194664-k8s-clst-state-k8s-lab-env-eu-west-1/lab.kube.esnow.uk
   dnsZone: ZV14RWA9ZMQHM
