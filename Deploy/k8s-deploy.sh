@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+
+# TODO:
+# 1. Use kops toolbox template to modifiy the kops manifest
+
+
+
 if [ "$1" = "update" ]; then
     DEPLOY_TYPE="update"
 elif [ "$1" = "create" ]; then
