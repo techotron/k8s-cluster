@@ -47,7 +47,7 @@ spec:
   - {{.}}
   {{end}}
   kubernetesVersion: {{.kubernetesVersion}}
-  masterPublicName: api-{{.name}}.{{.dnsZone}}
+  masterPublicName: api.{{.name}}.{{.dnsZone}}
   networkCIDR: {{.aws.networkAddress}}.0.0/16
   networkID: {{.aws.vpcId}}
   networking:
@@ -80,7 +80,7 @@ spec:
       zone: {{.aws.region}}c
   topology:
     bastion:
-      bastionPublicName: bastion-{{.name}}.{{.dnsZone}}
+      bastionPublicName: bastion.{{.name}}.{{.dnsZone}}
     dns:
       type: Public
     masters: private

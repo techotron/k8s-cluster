@@ -59,7 +59,7 @@ export AWS_ACCESS_KEY_ID=$(aws cloudformation describe-stacks --stack-name $K8S_
 export AWS_SECRET_ACCESS_KEY=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="SecretAccessKey").OutputValue')
 
 echo "[$(date)] - Exporting AWS resources to feed into manifest template"
-export K8S_DNS_FULL_DOMAIN="$K8S_DNS_DOMAIN."
+export K8S_DNS_FULL_DOMAIN="$NAME.$K8S_DNS_DOMAIN."
 export K8S_VPC_ID=$(aws ec2 describe-vpcs --query 'Vpcs[?Tags[?Key==`Name`]|[?Value==`k8s-cluster`]].VpcId' --output text)
 export AWS_HOSTED_ZONE_ID=$(aws route53 list-hosted-zones | jq '.HostedZones[] | select(.Name == env.K8S_DNS_FULL_DOMAIN).Id' | tr -d '"','' | tr -d '/hostedzone','')
 
