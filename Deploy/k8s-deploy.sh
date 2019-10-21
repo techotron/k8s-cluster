@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-
-# TODO:
-# 1. Use kops toolbox template to modifiy the kops manifest
-
-
-
 if [ "$1" = "update" ]; then
     DEPLOY_TYPE="update"
 elif [ "$1" = "create" ]; then
@@ -23,8 +17,9 @@ K8S_IAM_NAME="$K8S_STACK_NAME-iam"
 K8S_ENV_NAME="$K8S_STACK_NAME-env"
 K8S_DNS_DOMAIN="kube.esnow.uk"
 KOPS_CONFIG_VERSION=$(date +%F_%H%M%S)
-#S3_CONFIG_BUCKET_URL="https://s3-eu-west-1.amazonaws.com/722777194664-kops-eu-west-1/git/k8s-cluster/"
-CLUSTER_NAME="lab.kube.esnow.uk"
+NAME="lab"
+CLUSTER_NAME="$NAME.$K8S_DNS_DOMAIN"
+K8S_NETWORK="10.10"
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text --profile $AWS_PROFILE)
 CLUSTER_STATE_BUCKET="$AWS_ACCOUNT_ID-k8s-clst-state-$K8S_ENV_NAME-$AWS_REGION"
 
@@ -51,7 +46,7 @@ echo "[$(date)] - environment stack"
 aws cloudformation deploy --stack-name $K8S_ENV_NAME \
     --template-file ../Infrastructure/CFN-Environment.yaml \
     --parameter-overrides \
-        Network="10.10" \
+        Network=$K8S_NETWORK \
         KubernetesDNS=$K8S_DNS_DOMAIN \
         Environment="dev" \
         LoggerAccessKeyRotation=0 \
@@ -63,6 +58,12 @@ echo "[$(date)] - Exporting KOPS IAM credentials for KOPS related AWS tasks"
 export AWS_ACCESS_KEY_ID=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="AccessKeyId").OutputValue')
 export AWS_SECRET_ACCESS_KEY=$(aws cloudformation describe-stacks --stack-name $K8S_IAM_NAME --region $AWS_REGION --profile $AWS_PROFILE | jq --raw-output '.Stacks[].Outputs[] | select(.OutputKey=="SecretAccessKey").OutputValue')
 
+echo "[$(date)] - Exporting AWS resources to feed into manifest template"
+export K8S_DNS_FULL_DOMAIN="$K8S_DNS_DOMAIN."
+export K8S_VPC_ID=$(aws ec2 describe-vpcs --query 'Vpcs[?Tags[?Key==`Name`]|[?Value==`k8s-cluster`]].VpcId' --output text)
+export AWS_HOSTED_ZONE_ID=$(aws route53 list-hosted-zones | jq '.HostedZones[] | select(.Name == env.K8S_DNS_FULL_DOMAIN).Id' | tr -d '"','' | tr -d '/hostedzone','')
+
+
 echo "[$(date)] - Backing up old KOPS configuration"
 aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME/instancegroup/ --recursive --profile $AWS_PROFILE
 aws s3 cp s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config s3://$CLUSTER_STATE_BUCKET/$KOPS_CONFIG_VERSION/$CLUSTER_NAME --profile $AWS_PROFILE
@@ -70,7 +71,13 @@ aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup/ --recursive --
 aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
-kops create -f ../Manifest/lab.kube.esnow.uk.yaml --state="s3://"$CLUSTER_STATE_BUCKET
+kops toolbox template --template ../Manifest/cluster-template.yaml \
+    --values ../Manifest/cluster-config.yaml \
+    --fail-on-missing \
+    --format-yaml=true > ../Manifest/cluster-manifest.yaml \
+        --set "name=$NAME,dnsZone=$K8S_DNS_DOMAIN,aws.region=$AWS_REGION,aws.networkAddress=$K8S_NETWORK,aws.vpcId=$K8S_VPC_ID,awsDnsZoneId=$AWS_HOSTED_ZONE_ID,clusterStateStorage=s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME"
+
+kops create -f ../Manifest/cluster-manifest.yaml --state="s3://"$CLUSTER_STATE_BUCKET
 
 
 if [ "$DEPLOY_TYPE" = "update" ]; then
