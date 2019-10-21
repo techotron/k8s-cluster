@@ -1,18 +1,18 @@
-name: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
+name:
 environment: DEV
 kubernetesVersion: 1.13.0
 kubernetesApiAccess:
   - 0.0.0.0/0
 aws:
-  vpcId: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
-  networkAddress: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
-  region: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
-dnsZone: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
-awsDnsZoneId: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
+  vpcId:
+  networkAddress:
+  region:
+dnsZone:
+awsDnsZoneId:
 sshAccess:
   - 82.25.28.5/32
   - 164.39.87.162/32
-clusterStateStorage: SHOULD_BE_SET_VIA_KOPS_TOOLBOX_COMMAND
+clusterStateStorage:
 instances:
   master:
     type: t2.medium

@@ -1,0 +1,300 @@
+apiVersion: kops/v1alpha2
+kind: Cluster
+metadata:
+  creationTimestamp: null
+  name: {{.name}}.{{.dnsZone}}
+spec:
+  api:
+    loadBalancer:
+      type: Public
+      UseForInternalApi: true
+  authorization:
+    rbac: {}
+  kubeAPIServer:
+    runtimeConfig:
+      admissionregistration.k8s.io/v1alpha1: "true"
+    # audit logs
+    auditLogPath: /var/log/kube-apiserver-audit.log
+    auditLogMaxAge: 10
+    auditLogMaxBackups: 1
+    auditLogMaxSize: 100
+    auditPolicyFile: /srv/kubernetes/audit.yaml
+  sshAccess: {{range .sshAccess}}
+    - {{.}}
+  {{end}}
+  channel: stable
+  cloudLabels:
+    Environment: {{.environment}}
+    ProductComponents: EC2
+    Product: Kubernetes-cluster
+  cloudProvider: aws
+  configBase: {{.clusterStateStorage}}
+  dnsZone: {{.awsDnsZoneId}}
+  etcdClusters:
+    - etcdMembers:
+        - encryptedVolume: true
+          instanceGroup: master-{{.aws.region}}a
+          name: a
+        - encryptedVolume: true
+          instanceGroup: master-{{.aws.region}}b
+          name: b
+        - encryptedVolume: true
+          instanceGroup: master-{{.aws.region}}c
+          name: c
+      name: main
+    - etcdMembers:
+        - encryptedVolume: true
+          instanceGroup: master-{{.aws.region}}a
+          name: a
+        - encryptedVolume: true
+          instanceGroup: master-{{.aws.region}}b
+          name: b
+        - encryptedVolume: true
+          instanceGroup: master-{{.aws.region}}c
+          name: c
+      name: events
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  kubernetesApiAccess: {{range .kubernetesApiAccess}}
+    - {{.}}
+  {{end}}
+  kubernetesVersion: {{.kubernetesVersion}}
+  masterPublicName: api.{{.name}}.{{.dnsZone}}
+  #  masterInternalName: api.{{.name}}.{{.dnsZone}}
+  networkCIDR: {{.aws.networkAddress}}.0.0/16
+  networkID: {{.aws.vpcId}}
+  networking:
+    canal: {}
+  nonMasqueradeCIDR: 100.64.0.0/10
+  subnets:
+    - cidr: {{.aws.networkAddress}}.32.0/19
+      name: {{.aws.region}}a
+      type: Private
+      zone: {{.aws.region}}a
+    - cidr: {{.aws.networkAddress}}.64.0/19
+      name: {{.aws.region}}b
+      type: Private
+      zone: {{.aws.region}}b
+    - cidr: {{.aws.networkAddress}}.96.0/19
+      name: {{.aws.region}}c
+      type: Private
+      zone: {{.aws.region}}c
+    - cidr: {{.aws.networkAddress}}.0.0/22
+      name: utility-{{.aws.region}}a
+      type: Utility
+      zone: {{.aws.region}}a
+    - cidr: {{.aws.networkAddress}}.4.0/22
+      name: utility-{{.aws.region}}b
+      type: Utility
+      zone: {{.aws.region}}b
+    - cidr: {{.aws.networkAddress}}.8.0/22
+      name: utility-{{.aws.region}}c
+      type: Utility
+      zone: {{.aws.region}}c
+  topology:
+    bastion:
+      bastionPublicName: bastion.{{.name}}.{{.dnsZone}}
+    dns:
+      type: Public
+    masters: private
+    nodes: private
+  additionalPolicies:
+    node: |
+      [
+        {
+          "Sid": "ClusterNodeAutoScaling",
+          "Effect": "Allow",
+          "Action": [
+            "autoscaling:DescribeAutoScalingGroups",
+            "autoscaling:DescribeAutoScalingInstances",
+            "autoscaling:SetDesiredCapacity",
+            "autoscaling:DescribeLaunchConfigurations",
+            "autoscaling:DescribeTags",
+            "autoscaling:TerminateInstanceInAutoScalingGroup"
+          ],
+          "Resource": ["*"]
+        }
+      ]
+  # ! alpha feature
+  fileAssets:
+    - name: audit-log
+      # Note if not path is specificied the default path it /srv/kubernetes/assets/<name>
+      path: /srv/kubernetes/audit.yaml
+      roles: [Master] # a list of roles to apply the asset to, zero defaults to all [Master,Node,Bastion]
+      content: |
+        apiVersion: audit.k8s.io/v1beta1 # This is required.
+        kind: Policy
+        # Don't generate audit events for all requests in RequestReceived stage.
+        omitStages:
+          - "RequestReceived"
+        rules:
+          # Log pod changes at RequestResponse level
+          - level: RequestResponse
+            resources:
+            - group: ""
+              # Resource "pods" doesn't match requests to any subresource of pods,
+              # which is consistent with the RBAC policy.
+              resources: ["pods"]
+          # Log "pods/log", "pods/status" at Metadata level
+          - level: Metadata
+            resources:
+            - group: ""
+              resources: ["pods/log", "pods/status"]
+
+          # Don't log requests to a configmap called "controller-leader"
+          - level: None
+            resources:
+            - group: ""
+              resources: ["configmaps"]
+              resourceNames: ["controller-leader"]
+
+          # Don't log watch requests by the "system:kube-proxy" on endpoints or services
+          - level: None
+            users: ["system:kube-proxy"]
+            verbs: ["watch"]
+            resources:
+            - group: "" # core API group
+              resources: ["endpoints", "services"]
+
+          # Don't log authenticated requests to certain non-resource URL paths.
+          - level: None
+            userGroups: ["system:authenticated"]
+            nonResourceURLs:
+            - "/api*" # Wildcard matching.
+            - "/version"
+
+          # Log the request body of configmap changes in kube-system.
+          - level: Request
+            resources:
+            - group: "" # core API group
+              resources: ["configmaps"]
+            # This rule only applies to resources in the "kube-system" namespace.
+            # The empty string "" can be used to select non-namespaced resources.
+            namespaces: ["kube-system"]
+
+          # Log configmap and secret changes in all other namespaces at the Metadata level.
+          - level: Metadata
+            resources:
+            - group: "" # core API group
+              resources: ["secrets", "configmaps"]
+
+          # Log all other resources in core and extensions at the Request level.
+          - level: Request
+            resources:
+            - group: "" # core API group
+            - group: "extensions" # Version of group should NOT be included.
+
+          # A catch-all rule to log all other requests at the Metadata level.
+          - level: Metadata
+            # Long-running requests like watches that fall under this rule will not
+            # generate an audit event in RequestReceived.
+            omitStages:
+              - "RequestReceived"
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: null
+  labels:
+    kops.k8s.io/cluster: {{.name}}.{{.dnsZone}}
+  name: master-{{.aws.region}}a
+spec:
+  image: {{.instances.master.image}}
+  machineType: {{.instances.master.type}}
+  maxSize: {{.instances.master.min}}
+  minSize: {{.instances.master.max}}
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-{{.aws.region}}a
+  role: Master
+  rootVolumeSize: 64
+  subnets:
+    - {{.aws.region}}a
+
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: null
+  labels:
+    kops.k8s.io/cluster: {{.name}}.{{.dnsZone}}
+  name: master-{{.aws.region}}b
+spec:
+  image: {{.instances.master.image}}
+  machineType: {{.instances.master.type}}
+  maxSize: {{.instances.master.min}}
+  minSize: {{.instances.master.max}}
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-{{.aws.region}}b
+  role: Master
+  rootVolumeSize: 64
+  subnets:
+    - {{.aws.region}}b
+
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: null
+  labels:
+    kops.k8s.io/cluster: {{.name}}.{{.dnsZone}}
+  name: master-{{.aws.region}}c
+spec:
+  image: {{.instances.master.image}}
+  machineType: {{.instances.master.type}}
+  maxSize: {{.instances.master.min}}
+  minSize: {{.instances.master.max}}
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-{{.aws.region}}c
+  role: Master
+  rootVolumeSize: 64
+  subnets:
+    - {{.aws.region}}c
+
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: null
+  labels:
+    kops.k8s.io/cluster: {{.name}}.{{.dnsZone}}
+  name: nodes
+spec:
+  image: {{.instances.node.image}}
+  machineType: {{.instances.node.type}}
+  maxSize: {{.instances.node.min}}
+  minSize: {{.instances.node.max}}
+  nodeLabels:
+    kops.k8s.io/instancegroup: nodes
+  role: Node
+  rootVolumeSize: 124
+  subnets:
+    - {{.aws.region}}a
+    - {{.aws.region}}b
+    - {{.aws.region}}c
+
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: null
+  labels:
+    kops.k8s.io/cluster: {{.name}}.{{.dnsZone}}
+  name: bastions
+spec:
+  image: {{.instances.bastion.image}}
+  machineType: {{.instances.bastion.type}}
+  maxSize: {{.instances.bastion.min}}
+  minSize: {{.instances.bastion.max}}
+  nodeLabels:
+    kops.k8s.io/instancegroup: bastions
+  role: Bastion
+  subnets:
+    - utility-{{.aws.region}}a
+    - utility-{{.aws.region}}b
+    - utility-{{.aws.region}}c

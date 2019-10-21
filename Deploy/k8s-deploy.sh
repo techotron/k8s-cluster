@@ -10,6 +10,12 @@ else
     DEPLOY_TYPE="create"
 fi
 
+if [ "$2" = "ha" ]; then
+    HA="true"
+else
+    HA="false"
+fi
+
 AWS_PROFILE="snowco"
 AWS_REGION="eu-west-1"
 K8S_STACK_NAME="k8s-lab"
@@ -71,11 +77,19 @@ aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/instancegroup/ --recursive --
 aws s3 rm s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME/config --profile $AWS_PROFILE
 
 echo "[$(date)] - Creating KOPS configuration and uploading to s3"
-kops toolbox template --template ../Manifest/cluster-template.yaml \
-    --values ../Manifest/cluster-config.yaml \
-    --fail-on-missing \
-    --format-yaml=true > ../Manifest/cluster-manifest.yaml \
-        --set "name=$NAME,dnsZone=$K8S_DNS_DOMAIN,aws.region=$AWS_REGION,aws.networkAddress=$K8S_NETWORK,aws.vpcId=$K8S_VPC_ID,awsDnsZoneId=$AWS_HOSTED_ZONE_ID,clusterStateStorage=s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME"
+if [ "$HA" = "false" ]; then
+    kops toolbox template --template ../Manifest/cluster-template.yaml \
+        --values ../Manifest/cluster-config.yaml \
+        --fail-on-missing \
+        --format-yaml=true > ../Manifest/cluster-manifest.yaml \
+            --set "name=$NAME,dnsZone=$K8S_DNS_DOMAIN,aws.region=$AWS_REGION,aws.networkAddress=$K8S_NETWORK,aws.vpcId=$K8S_VPC_ID,awsDnsZoneId=$AWS_HOSTED_ZONE_ID,clusterStateStorage=s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME"
+elif [ "$HA" = "true" ]; then
+    kops toolbox template --template ../Manifest/ha-cluster-template.yaml \
+        --values ../Manifest/cluster-config.yaml \
+        --fail-on-missing \
+        --format-yaml=true > ../Manifest/cluster-manifest.yaml \
+            --set "name=$NAME,dnsZone=$K8S_DNS_DOMAIN,aws.region=$AWS_REGION,aws.networkAddress=$K8S_NETWORK,aws.vpcId=$K8S_VPC_ID,awsDnsZoneId=$AWS_HOSTED_ZONE_ID,clusterStateStorage=s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME"
+fi
 
 kops create -f ../Manifest/cluster-manifest.yaml --state="s3://"$CLUSTER_STATE_BUCKET
 
