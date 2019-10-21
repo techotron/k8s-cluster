@@ -17,13 +17,13 @@ else
 fi
 
 AWS_PROFILE="snowco"
-AWS_REGION="eu-west-1"
+AWS_REGION="eu-west-2"
+NAME="lab"
 K8S_STACK_NAME="k8s-lab"
+K8S_DNS_DOMAIN="kube.esnow.uk"
 K8S_IAM_NAME="$K8S_STACK_NAME-iam"
 K8S_ENV_NAME="$K8S_STACK_NAME-env"
-K8S_DNS_DOMAIN="kube.esnow.uk"
 KOPS_CONFIG_VERSION=$(date +%F_%H%M%S)
-NAME="lab"
 CLUSTER_NAME="$NAME.$K8S_DNS_DOMAIN"
 K8S_NETWORK="10.10"
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text --profile $AWS_PROFILE)
@@ -66,7 +66,7 @@ export AWS_SECRET_ACCESS_KEY=$(aws cloudformation describe-stacks --stack-name $
 
 echo "[$(date)] - Exporting AWS resources to feed into manifest template"
 export K8S_DNS_FULL_DOMAIN="$NAME.$K8S_DNS_DOMAIN."
-export K8S_VPC_ID=$(aws ec2 describe-vpcs --query 'Vpcs[?Tags[?Key==`Name`]|[?Value==`k8s-cluster`]].VpcId' --output text)
+export K8S_VPC_ID=$(aws ec2 describe-vpcs --region $AWS_REGION --query 'Vpcs[?Tags[?Key==`Name`]|[?Value==`k8s-cluster`]].VpcId' --output text)
 export AWS_HOSTED_ZONE_ID=$(aws route53 list-hosted-zones | jq '.HostedZones[] | select(.Name == env.K8S_DNS_FULL_DOMAIN).Id' | tr -d '"','' | tr -d '/hostedzone','')
 
 

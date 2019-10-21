@@ -10,6 +10,16 @@ Run the `./k8s-deploy.sh` to deploy a cluster in your AWS account. Some variable
 
 **Note:** This will attempt to create a certificate for the KubernetesDNS name. The validation method in the CFN template is `DNS` so you'll need to go to the ACM and create the necessary DNS records before the CFN stack finishes
 
+### Deploy HA Cluster
+
+This will deploy a K8s cluster with master nodes in HA
+
+`./k8s-deploy.sh create ha`
+
+or 
+
+`./k8s-deploy.sh update ha`
+
 Run the `./k8s-setup.sh` to setup the cluster with the ops namespace and install helm/tiller. 
 
 ### Route53 Notes
