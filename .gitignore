@@ -16,4 +16,4 @@
 *.txt
 
 # Rendered Manifest
-./Manifest/cluster-manifest.yaml
+Manifest/cluster-manifest.yaml
