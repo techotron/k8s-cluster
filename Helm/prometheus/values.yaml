@@ -636,7 +636,7 @@ server:
     ## Must be provided if Ingress is enabled
     ##
     hosts: [
-      prometheus.eu.sbx.kube.intapp.com
+      prometheus.lab.kube.esnow.uk
     ]
     #   - prometheus.domain.com
     #   - domain.com/prometheus

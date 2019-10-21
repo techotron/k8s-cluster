@@ -94,7 +94,7 @@ ingress:
   labels: {}
   path: /
   hosts:
-    - grafana.eu.sbx.kube.intapp.com
+    - grafana.lab.kube.esnow.uk
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

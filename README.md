@@ -42,8 +42,7 @@ The cost of Environement and Kops stacks is next to nothing so it's convenient t
 
 ## Infrastructure
 
-Defined in the ./Manifest/lab.kube.esnow.uk.yaml file
-
+Defined in the `./Manifest/cluster-template.yaml` and `./Manifest/ha-cluster-template.yaml` files
 
 ## Kops image:k8s version relationship
 

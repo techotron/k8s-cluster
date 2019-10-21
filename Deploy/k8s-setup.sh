@@ -2,7 +2,7 @@
 
 # Useful commands
 # Upload the key to the bastion host in order to log onto the nodes
-#scp -i ~/.ssh/k8s_id_rsa ~/.ssh/k8s_id_rsa admin@bastion-eddy.eu.sbx.kube.intapp.com:~/.ssh/k8s_id_rsa
+#scp -i ~/.ssh/k8s_id_rsa ~/.ssh/k8s_id_rsa admin@bastion-lab.kube.esnow.uk:~/.ssh/k8s_id_rsa
 
 # SSH onto a node
 #ssh -A -i ~/.ssh/k8s_id_rsa admin@<nodeIP>
