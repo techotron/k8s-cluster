@@ -13,6 +13,9 @@
 echo "[$(date)] - Applying namespace"
 kubectl apply -f ../Namespaces/ops.yaml
 
+echo "[$(date)] - Creating a namespace for monitoring resources"
+kubectl create namespace monitoring
+
 echo "[$(date)] - Setting up helm"
 kubectl apply -f ../Authorization/helm/helm_ops.yaml
 
@@ -33,10 +36,10 @@ echo "[$(date)] - Install wordpress"
 helm upgrade -i -f ../Helm/wordpress/values.yaml --wait --timeout 120 wordpress stable/wordpress --tiller-namespace=ops --namespace=ops
 
 echo "[$(date)] - Install grafana"
-helm upgrade -i -f ../Helm/grafana/values.yaml --wait --timeout 60 grafana stable/grafana --tiller-namespace=ops --namespace=ops
+helm upgrade -i -f ../Helm/grafana/values.yaml --wait --timeout 60 grafana stable/grafana --tiller-namespace=ops --namespace=monitoring
 
 echo "[$(date)] - Install prometheus"
-helm upgrade -i -f ../Helm/prometheus/values.yaml --wait --timeout 120 prometheus stable/prometheus --tiller-namespace=ops --namespace=ops
+helm upgrade -i -f ../Helm/prometheus/values.yaml --wait --timeout 120 prometheus stable/prometheus --tiller-namespace=ops --namespace=monitoring
 
 echo "[$(date)] - Install jenkins"
 helm upgrade -i -f ../Helm/jenkins/values.yaml --wait --timeout 400 jenkins stable/jenkins --tiller-namespace=ops --namespace=ops
