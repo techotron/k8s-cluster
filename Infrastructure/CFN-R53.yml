@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Route53 CNAME
+
+Parameters:
+  SubDomain:
+    Type: String
+  AliasTarget:
+    Type: String
+
+Resources:
+  IngressAlias:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub "${SubDomain}.lab.kube.esnow.uk"
+      HostedZoneId : ZV14RWA9ZMQHM
+      AliasTarget:
+        DNSName: !Ref AliasTarget
+        HostedZoneId : ZHURV8PSTC4K8 # aws elb describe-load-balancers --region eu-west-2
+      Type: A

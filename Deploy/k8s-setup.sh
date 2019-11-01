@@ -25,6 +25,10 @@ helm upgrade -i -f ../Helm/ingress-nginx/values.yaml --wait --timeout 60 ingress
 # !!!NOTE!!!
 # Need to add AWS alias for each service to the ELB created in the above deployment
 
+# Example
+
+#aws cloudformation deploy --no-fail-on-empty-changeset --template-file ../Infrastructure/CFN-R53.yml --stack-name k8s-lab-r53 --region eu-west-2 --parameter-override SubDomain=prometheus AliasTarget=aade94916fca311e9be7e06c3238a067-383249045.eu-west-2.elb.amazonaws.com
+
 echo "[$(date)] - Install wordpress"
 helm upgrade -i -f ../Helm/wordpress/values.yaml --wait --timeout 120 wordpress stable/wordpress --tiller-namespace=ops --namespace=ops
 
@@ -38,4 +42,4 @@ echo "[$(date)] - Install jenkins"
 helm upgrade -i -f ../Helm/jenkins/values.yaml --wait --timeout 400 jenkins stable/jenkins --tiller-namespace=ops --namespace=ops
 
 #simple-site
-#helm upgrade simple-site ../Helm/simple-site --namespace default --tiller-namespace=default --install
+#helm upgrade simple-site ../Helm/simple-site --namespace default --tiller-namespace=ops --install
