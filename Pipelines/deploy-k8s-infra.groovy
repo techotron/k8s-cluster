@@ -19,6 +19,7 @@ pipeline {
     stage("Initialise") {
       steps {
         script {
+          checkout scm
           sh(returnStdout: true, script: 'ls -lath')
           // config = readYaml file: 'pipelines/deploy-k8s-infra.yaml'
           // service_name = config.service_name
