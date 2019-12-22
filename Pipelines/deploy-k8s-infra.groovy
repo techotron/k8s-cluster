@@ -21,7 +21,6 @@ pipeline {
         script {
           checkout scm
           config = readYaml file: 'Pipelines/deploy-k8s-infra.yaml'
-          service_name = config.service_name
           version = sh(
             returnStdout: true,
             script: 'git rev-parse --short HEAD').trim()
