@@ -25,12 +25,12 @@ pipeline {
       }
       steps {
         script {
-          // 	config = readYaml file: 'pipelines/Jenkinsfile.cicd.yml'
-          // 	service_name = config.service_name
-          // 	version = sh(
-          // 	  returnStdout: true,
-          // 	  script: 'git rev-parse --short HEAD').trim()
-          // 	setBuildDisplayName([application: config.service_name, version: version])
+          config = readYaml file: 'pipelines/deploy-k8s-infra.yaml'
+          service_name = config.service_name
+          version = sh(
+            returnStdout: true,
+            script: 'git rev-parse --short HEAD').trim()
+          setBuildDisplayName([application: config.service_name, version: version])
           println "THIS IS A TEST - Part 2"
         }
       }
