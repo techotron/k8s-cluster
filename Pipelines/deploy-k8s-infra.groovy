@@ -1,10 +1,10 @@
 pipeline {
-  agent {
-    // node {
+  // agent {
+  node {
     label 'docker'
     customWorkspace "./workspace/${BUILD_TAG}"
-    // }
   }
+  // }
   options {
     timestamps()
     timeout(time: 1, unit: 'HOURS')
