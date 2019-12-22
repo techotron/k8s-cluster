@@ -20,15 +20,13 @@ pipeline {
       steps {
         script {
           checkout scm
-          files = sh(returnStdout: true, script: 'ls -lath')
-          println files
-          // config = readYaml file: 'pipelines/deploy-k8s-infra.yaml'
-          // service_name = config.service_name
-          // version = sh(
-          //   returnStdout: true,
-          //   script: 'git rev-parse --short HEAD').trim()
-          // setBuildDisplayName([application: config.service_name, version: version])
-          // println "THIS IS A TEST - Part 2"
+          config = readYaml file: 'Pipelines/deploy-k8s-infra.yaml'
+          service_name = config.service_name
+          version = sh(
+            returnStdout: true,
+            script: 'git rev-parse --short HEAD').trim()
+          setBuildDisplayName([application: config.service_name, version: version])
+          println "THIS IS A TEST - Part 2"
         }
       }
     }
