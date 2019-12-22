@@ -17,12 +17,6 @@ pipeline {
   }
   stages {
     stage("Initialise") {
-      agent {
-        node {
-          label 'docker'
-          customWorkspace "./workspace/${BUILD_TAG}/version"
-        }
-      }
       steps {
         script {
           config = readYaml file: 'pipelines/deploy-k8s-infra.yaml'
