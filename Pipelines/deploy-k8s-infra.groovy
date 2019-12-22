@@ -1,10 +1,14 @@
 pipeline {
-  // agent {
-  node {
-    label 'docker'
-    customWorkspace "./workspace/${BUILD_TAG}"
+  agent {
+    docker {
+      image 'python:3'
+    }
+    // node {
+    //   label 'docker'
+    //   customWorkspace "./workspace/${BUILD_TAG}"
+    //   dockerfile
+    // }
   }
-  // }
   options {
     timestamps()
     timeout(time: 1, unit: 'HOURS')
