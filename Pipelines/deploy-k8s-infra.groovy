@@ -20,7 +20,8 @@ pipeline {
       steps {
         script {
           checkout scm
-          sh(returnStdout: true, script: 'ls -lath')
+          files = sh(returnStdout: true, script: 'ls -lath')
+          println files
           // config = readYaml file: 'pipelines/deploy-k8s-infra.yaml'
           // service_name = config.service_name
           // version = sh(
