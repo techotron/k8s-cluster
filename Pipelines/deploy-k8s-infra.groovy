@@ -34,7 +34,7 @@ pipeline {
         script {
           withCredentials([usernamePassword(credentialsId: 'jenkins-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
               sh '''
-                ls -lath
+                aws help
               '''
           }
         }
