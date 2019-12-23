@@ -1,13 +1,13 @@
 pipeline {
   agent {
-    docker {
+    // docker {
+    //   image 'techotron/ci_agent:latest'
+    // }
+    node {
+      label 'docker'
+      customWorkspace "./workspace/${BUILD_TAG}"
       image 'techotron/ci_agent:latest'
     }
-    // node {
-    //   label 'docker'
-    //   customWorkspace "./workspace/${BUILD_TAG}"
-    //   dockerfile
-    // }
   }
   options {
     timestamps()
