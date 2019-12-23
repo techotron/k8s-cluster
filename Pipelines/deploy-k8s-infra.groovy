@@ -6,7 +6,6 @@ pipeline {
     node {
       label 'docker'
       customWorkspace "./workspace/${BUILD_TAG}"
-      image 'techotron/ci_agent:latest'
     }
   }
   options {
