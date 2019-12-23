@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'python:3'
+      image 'techotron/ci_agent:latest'
     }
     // node {
     //   label 'docker'
