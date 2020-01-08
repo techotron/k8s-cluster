@@ -24,11 +24,6 @@ Parameters:
     Description: Incrementing this value notifies AWS CloudFormation that you want to rotate your access key.
     Default: 0
 
-Mappings:
-  Environment:
-    dev:
-      ValidationDomain: kube.esnow.uk
-
 Resources:
   ClusterStateStorage:
     Type: "AWS::S3::Bucket"
@@ -149,9 +144,9 @@ Resources:
         - !Ref KubernetesDNS
       DomainValidationOptions:
         - DomainName: !Ref KubernetesDNS
-          ValidationDomain: !FindInMap [Environment, !Ref Environment, ValidationDomain]
+          ValidationDomain: !Ref KubernetesDNS
         - DomainName: !Join ["", ["*.", !Ref KubernetesDNS]]
-          ValidationDomain: !FindInMap [Environment, !Ref Environment, ValidationDomain]
+          ValidationDomain: !Ref KubernetesDNS
       Tags:
         - Key: ProductComponents
           Value: Certificate

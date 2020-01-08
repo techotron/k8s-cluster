@@ -48,6 +48,18 @@ Defined in the `./Manifest/cluster-template.yaml` and `./Manifest/ha-cluster-tem
 
 https://github.com/kubernetes/kops/blob/master/channels/stable
 
+## AWS Domain Setup
+
+These are the steps to setup your own domain using Route53. Although not a requirement, I'll go through setting up child domains in which to keep K8s resources in. These will be _kube.DOMAIN.TLD_ and _lab.kube.DOMAIN.TLD_. You don't have to use these names but will require a minor change to the [k8s-deploy.sh](./k8s-deploy.sh)
+
+1. Within the Route53 console, click on **Registered Domains** -> **Register Domain** and follow the setup guide for registering your own domain.
+1. Once the new domain is registered, open **Hosted Zones** and click on **Create Hosted Zone**. Enter the full domain, eg "kube.snowco.uk", leave the tpye as "Public" and click **Create**.
+1. Open the new hosted zone and copy the values of the **NS** (Nameserver) records (there will be about 4 of them).
+1. Go back to the list of hosted zones and open the root domain, eg "snowco.uk".
+1. Create a new record set with a name of "kube" and type of "NS" and paste the list of name servers you copied a few steps ago.
+1. Repeat the steps above for a new child domain eg, "lab.kube.snowco.uk" but create the new NS records in the "kube.snowco.uk" parent domain.
+
+**Note:** These changes will take a bit of time to propergate. 
 
 
 
