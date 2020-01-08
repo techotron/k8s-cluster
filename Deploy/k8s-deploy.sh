@@ -20,7 +20,7 @@ AWS_PROFILE="snowco"
 AWS_REGION="eu-west-2"
 NAME="lab"
 K8S_STACK_NAME="k8s-lab"
-K8S_DNS_DOMAIN="kube.snowco.uk"
+K8S_DNS_DOMAIN="kube.esnow.uk"
 K8S_IAM_NAME="$K8S_STACK_NAME-iam"
 K8S_ENV_NAME="$K8S_STACK_NAME-env"
 KOPS_CONFIG_VERSION=$(date +%F_%H%M%S)
@@ -91,6 +91,11 @@ elif [ "$HA" = "true" ]; then
             --set "name=$NAME,dnsZone=$K8S_DNS_DOMAIN,aws.region=$AWS_REGION,aws.networkAddress=$K8S_NETWORK,aws.vpcId=$K8S_VPC_ID,awsDnsZoneId=$AWS_HOSTED_ZONE_ID,clusterStateStorage=s3://$CLUSTER_STATE_BUCKET/$CLUSTER_NAME"
 fi
 
+if [ "$DEPLOY_TYPE" = "create_deps" ]; then
+    echo "[$(date)] - Dependancies deployed - nothing else to do"
+    exit 0
+fi
+
 kops create -f ../Manifest/cluster-manifest.yaml --state="s3://"$CLUSTER_STATE_BUCKET
 
 
@@ -100,6 +105,7 @@ elif [ "$DEPLOY_TYPE" = "create" ]; then
     echo "[$(date)] - Creating pki secret and uploading to s3"
     kops create secret --name $CLUSTER_NAME sshpublickey admin -i ~/.ssh/k8s_id_rsa.pub --state="s3://"$CLUSTER_STATE_BUCKET
 fi
+
 
 echo "[$(date)] - Deploy the cluster"
 kops update cluster $CLUSTER_NAME --yes \

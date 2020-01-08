@@ -62,18 +62,18 @@ Resources:
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
 
-  KubernetesHostedZone:
-    Type: "AWS::Route53::HostedZone"
-    Properties:
-      HostedZoneConfig:
-        Comment:
-          Kuburnetes Hostested Zone
-      HostedZoneTags:
-        - Key: ProductComponents
-          Value: S3
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      Name: !Ref KubernetesDNS
+  # KubernetesHostedZone:
+  #   Type: "AWS::Route53::HostedZone"
+  #   Properties:
+  #     HostedZoneConfig:
+  #       Comment:
+  #         Kuburnetes Hostested Zone
+  #     HostedZoneTags:
+  #       - Key: ProductComponents
+  #         Value: S3
+  #       - Key: Environment
+  #         Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
+  #     Name: !Ref KubernetesDNS
 
   VPC:
     Type: "AWS::EC2::VPC"
@@ -586,8 +586,8 @@ Outputs:
     Value: !Ref LogsStorage
   ThanosStorage:
     Value: !Join ["/", ["s3:/", !Ref ThanosStorage]]
-  HostedZoneID:
-     Value: !Ref KubernetesHostedZone
+  # HostedZoneID:
+  #    Value: !Ref KubernetesHostedZone
   ELBCertificate:
     Value: !Ref ELBCertificate
   LoggerAccessKeyId:
