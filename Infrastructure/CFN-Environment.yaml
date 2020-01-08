@@ -7,18 +7,15 @@ Parameters:
     Description: "Network/16 from CIDR VPC blocks 10.0.0.0/8. Should be unique across all deployment. Example: 10.2"
     Type: String
     AllowedPattern: '((\d{1,3})\.)\d{1,3}'
-
   KubernetesDNS:
     Type: String
     Description: Hosted zone for Kubernetes DNS.
-
   Environment:
     Description: Uses for resource tagging and select appropriate Policy for VPC Peering acknowledge
     Type: String
     AllowedValues:
       - dev
       - prod
-
   LoggerAccessKeyRotation:
     Type: Number
     Description: Incrementing this value notifies AWS CloudFormation that you want to rotate your access key.
@@ -51,29 +48,6 @@ Resources:
           Value: Logs
         - Key: Environment
           Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-
-  ThanosStorage:
-    Type: "AWS::S3::Bucket"
-    Properties:
-      BucketName: !Join ["-", [ !Ref "AWS::AccountId", "k8s-clst-state", !Ref "AWS::StackName", !Ref "AWS::Region", "thanos"]]
-      Tags:
-        - Key: ProductComponents
-          Value: Thanos
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-
-  # KubernetesHostedZone:
-  #   Type: "AWS::Route53::HostedZone"
-  #   Properties:
-  #     HostedZoneConfig:
-  #       Comment:
-  #         Kuburnetes Hostested Zone
-  #     HostedZoneTags:
-  #       - Key: ProductComponents
-  #         Value: S3
-  #       - Key: Environment
-  #         Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-  #     Name: !Ref KubernetesDNS
 
   VPC:
     Type: "AWS::EC2::VPC"
@@ -172,20 +146,6 @@ Resources:
               Effect: "Allow"
               Action: "s3:PutObject"
               Resource: !Join ["", ["arn:aws:s3:::", !Ref LogsStorage, "/*"]]
-      - PolicyName: thanos
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            -
-              Effect: "Allow"
-              Action:
-               - "s3:ListBucket"
-               - "s3:GetObject"
-               - "s3:DeleteObject"
-               - "s3:PutObject"
-              Resource:
-              - !Join ["", ["arn:aws:s3:::", !Ref ThanosStorage]]
-              - !Join ["", ["arn:aws:s3:::", !Ref ThanosStorage, "/*"]]
       - PolicyName: VisualEditor0
         PolicyDocument:
           Version: "2012-10-17"
@@ -204,340 +164,6 @@ Resources:
       Serial: !Ref LoggerAccessKeyRotation
       Status: Active
       UserName: !Ref LoggerUser
-
-  DBsSubnetGroup:
-    Type: "AWS::RDS::DBSubnetGroup"
-    Properties:
-      DBSubnetGroupName: !Ref "AWS::StackName"
-      DBSubnetGroupDescription: !Join [" ", ["Created by ", !Ref "AWS::StackName"]]
-      SubnetIds:
-        - !Ref PrivateRDSSubnetGroup1a
-        - !Ref PrivateRDSSubnetGroup1b
-        - !Ref PrivateRDSSubnetGroup1c
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: Kubernetes-cluster
-
-  PrivateRDSSubnetGroup1a:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 0
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".20.0/22" ]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'rds'
-            - !Select
-              - 0
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  PrivateRDSSubnetGroup1b:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 1
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".24.0/22"]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-            - '-'
-            - - 'rds'
-              - !Select
-                - 1
-                - Fn::GetAZs: !Ref 'AWS::Region'
-              - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  PrivateRDSSubnetGroup1c:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 2
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".28.0/22"]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'rds'
-            - !Select
-              - 2
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPrivateSubnetGroup1a:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 0
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".249.0/24" ]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'notk8s-private'
-            - !Select
-              - 0
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPrivateSubnetGroup1b:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 1
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".250.0/24"]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'notk8s-private'
-            - !Select
-              - 1
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPrivateSubnetGroup1c:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 2
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".251.0/24"]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'notk8s-private'
-            - !Select
-              - 2
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPublicSubnetGroup1a:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 0
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".252.0/24" ]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'notk8s-public'
-            - !Select
-              - 0
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPublicSubnetGroup1b:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 1
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".253.0/24"]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'notk8s-public'
-            - !Select
-              - 1
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPublicSubnetGroup1c:
-    Type: "AWS::EC2::Subnet"
-    Properties:
-      AvailabilityZone: !Select
-        - 2
-        - Fn::GetAZs: !Ref 'AWS::Region'
-      CidrBlock: !Join ["", [ !Ref Network, ".254.0/24"]]
-      Tags:
-        - Key: ProductComponents
-          Value: RDS
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-        - Key: Name
-          Value: !Join
-          - '-'
-          - - 'notk8s-public'
-            - !Select
-              - 2
-              - Fn::GetAZs: !Ref 'AWS::Region'
-            - !Ref KubernetesDNS
-      VpcId: !Ref VPC
-
-  NotK8sPublicSubnetGroupAssociate1a:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
-    Properties:
-      RouteTableId: !Ref RouteTablePublic
-      SubnetId: !Ref NotK8sPublicSubnetGroup1a
-
-  NotK8sPublicSubnetGroupAssociate1b:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
-    Properties:
-      RouteTableId: !Ref RouteTablePublic
-      SubnetId: !Ref NotK8sPublicSubnetGroup1b
-
-  NotK8sPublicSubnetGroupAssociate1c:
-    Type: "AWS::EC2::SubnetRouteTableAssociation"
-    Properties:
-      RouteTableId: !Ref RouteTablePublic
-      SubnetId: !Ref NotK8sPublicSubnetGroup1c
-
-  RDSsSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupName: Kubernetes-cluster-RDSs
-      GroupDescription: Common security group for RDS.
-      SecurityGroupIngress:
-        - IpProtocol: "tcp"
-          FromPort: "5432"
-          ToPort: "5432"
-          SourceSecurityGroupId: !Ref LambdasSecurityGroup
-        - IpProtocol: "tcp"
-          FromPort: "5432"
-          ToPort: "5432"
-          SourceSecurityGroupId: !Ref NotK8sPublicSecurityGroup
-        - IpProtocol: "tcp"
-          FromPort: "5432"
-          ToPort: "5432"
-          SourceSecurityGroupId: !Ref NotK8sPrivateSecurityGroup
-        - Description: "Hardcoded IP range of Kubernetes Cluster Nodes AZ-a"
-          CidrIp: !Join [".",[!Ref Network, "32.0/19"]]
-          IpProtocol: "tcp"
-          FromPort: "5432"
-          ToPort: "5432"
-        - Description: "Hardcoded IP range of Kubernetes Cluster Nodes AZ-b"
-          CidrIp: !Join [".",[!Ref Network, "64.0/19"]]
-          IpProtocol: "tcp"
-          FromPort: "5432"
-          ToPort: "5432"
-        - Description: "Hardcoded IP range of Kubernetes Cluster Nodes AZ-c"
-          CidrIp: !Join [".",[!Ref Network, "96.0/19"]]
-          IpProtocol: "tcp"
-          FromPort: "5432"
-          ToPort: "5432"
-      Tags:
-        - Key: ProductComponents
-          Value: VPC-Peering
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      VpcId: !Ref VPC
-
-  ExtraSecuritytoRDSforDev:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      CidrIp: !Join [".",[!Ref Network, "128.0/18"]]
-      Description: "Additional Ip range for Kubernetes Cluster Nodes for development environment"
-      FromPort: 5432
-      GroupId: !GetAtt RDSsSecurityGroup.GroupId
-      IpProtocol: tcp
-      ToPort: 5432
-
-  LambdasSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupName: Kubernetes-cluster-Lambdas
-      GroupDescription: Common security group for Lambda.
-      SecurityGroupEgress:
-        - Description: Allow DataExecutor Lambda access to internet (80)
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - Description: Allow DataExecutor Lambda access to internet (443)
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-      Tags:
-        - Key: Environment
-          Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      VpcId: !Ref VPC
-
-  LambdaSecurityGroupRDS:
-    Type: AWS::EC2::SecurityGroupEgress
-    Properties:
-      DestinationSecurityGroupId: !GetAtt RDSsSecurityGroup.GroupId
-      Description: "Allow outbound to RDS"
-      FromPort: 5432
-      GroupId: !Ref LambdasSecurityGroup
-      IpProtocol: tcp
-      ToPort: 5432
-
-  NotK8sPrivateSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupName: Kubernetes-cluster-notk8s-private
-      GroupDescription: Not k8s application.
-      Tags:
-      - Key: Environment
-        Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      VpcId: !Ref VPC
-
-  NotK8sPublicSecurityGroup:
-    Type: "AWS::EC2::SecurityGroup"
-    Properties:
-      GroupName: Kubernetes-cluster-notk8s-public
-      GroupDescription: Not k8s application.
-      Tags:
-      - Key: Environment
-        Value: !Join ["-", [!Ref Environment, !Ref "AWS::Region"]]
-      VpcId: !Ref VPC
 
   LogsBucketPolicy:
     Type: "AWS::S3::BucketPolicy"
@@ -564,19 +190,6 @@ Resources:
             Principal:
               AWS: "arn:aws:iam::722777194664:root"
 
-  VaultUser:
-    Type: "AWS::IAM::User"
-    Properties:
-      UserName: !Join ["-", ["vault", !Select [0, !Split [".", !Ref KubernetesDNS]], !Ref "AWS::StackName", !Ref "AWS::Region" ]]
-      ManagedPolicyArns:
-      - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-
-  VaultUserAccessKey:
-    Type: "AWS::IAM::AccessKey"
-    Properties:
-      Status: Active
-      UserName: !Ref VaultUser
-
 Outputs:
   VPCID:
     Value: !Ref VPC
@@ -584,41 +197,9 @@ Outputs:
     Value: !Join ["/", ["s3:/", !Ref ClusterStateStorage]]
   LogsStorage:
     Value: !Ref LogsStorage
-  ThanosStorage:
-    Value: !Join ["/", ["s3:/", !Ref ThanosStorage]]
-  # HostedZoneID:
-  #    Value: !Ref KubernetesHostedZone
   ELBCertificate:
     Value: !Ref ELBCertificate
   LoggerAccessKeyId:
     Value: !Ref LoggerUserAccessKey
   LoggerSecretAccessKey:
     Value: !GetAtt LoggerUserAccessKey.SecretAccessKey
-  DBsSubnetGroup:
-    Value: !Ref DBsSubnetGroup
-  PrivateRDSSubnetGroup1a:
-    Value: !Ref PrivateRDSSubnetGroup1a
-  PrivateRDSSubnetGroup1b:
-    Value: !Ref PrivateRDSSubnetGroup1b
-  PrivateRDSSubnetGroup1c:
-    Value: !Ref PrivateRDSSubnetGroup1c
-  RDSsSecurityGroup:
-    Value: !GetAtt RDSsSecurityGroup.GroupId
-  LambdasSecurityGroup:
-    Value: !GetAtt LambdasSecurityGroup.GroupId
-  NotK8sPublicSubnetGroup1a:
-    Value: !Ref NotK8sPublicSubnetGroup1a
-  NotK8sPublicSubnetGroup1b:
-    Value: !Ref NotK8sPublicSubnetGroup1b
-  NotK8sPublicSubnetGroup1c:
-    Value: !Ref NotK8sPublicSubnetGroup1c
-  NotK8sPrivateSubnetGroup1a:
-    Value: !Ref NotK8sPrivateSubnetGroup1a
-  NotK8sPrivateSubnetGroup1b:
-    Value: !Ref NotK8sPrivateSubnetGroup1b
-  NotK8sPrivateSubnetGroup1c:
-    Value: !Ref NotK8sPrivateSubnetGroup1c
-  VaultAccessKeyId:
-    Value: !Ref VaultUserAccessKey
-  VaultSecretAccessKey:
-    Value: !GetAtt VaultUserAccessKey.SecretAccessKey
