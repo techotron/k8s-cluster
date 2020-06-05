@@ -1,0 +1,47 @@
+{
+  "title": "Do we remain available in face of pod going down?",
+  "description": "We expect Kubernetes to handle the situation gracefully when a pod goes down",
+  "tags": ["kubernetes"],
+  "secrets": {
+    "k8s": {
+      "KUBERNETES_CONTEXT": "lab.kube.esnow.uk"
+    }
+  },
+  "steady-state-hypothesis": {
+      "title": "Verifying service remains healthy",
+      "probes": [
+          {
+              "name": "all-our-microservices-should-be-healthy",
+              "type": "probe",
+              "tolerance": true,
+              "secrets": ["k8s"],
+              "provider": {
+                  "type": "python",
+                  "module": "chaosk8s.probes",
+                  "func": "microservice_available_and_healthy",
+                  "arguments": {
+                      "name": "simple-site"
+                  }
+              }
+          }
+      ]
+  },
+  "method": [
+      {
+          "type": "action",
+          "name": "terminate-db-pod",
+          "provider": {
+              "type": "python",
+              "module": "chaosk8s.pod.actions",
+              "func": "terminate_pods",
+              "arguments": {
+                  "label_selector": "app=simple-site",
+                  "rand": true
+              }
+          },
+          "pauses": {
+              "after": 5
+          }
+      }
+  ]
+}

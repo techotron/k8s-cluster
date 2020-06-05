@@ -213,3 +213,608 @@
 [36m[2020-06-05 21:42:45 DEBUG] [__init__:355][39m No controls to apply on 'loader'
 [31m[2020-06-05 21:42:45 ERROR] [cli:112][39m Path "experiment.json" does not exist.
 [36m[2020-06-05 21:42:45 DEBUG] [cli:113][39m Path "experiment.json" does not exist.
+[36m[2020-06-05 21:58:33 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 21:58:33 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 21:58:33 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 21:58:33 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 21:58:33 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 21:58:33 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 21:58:33 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 21:58:33 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 21:58:33 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 21:58:33 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 21:58:33 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 21:58:33 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 21:58:34 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 21:58:34 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 21:58:34 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 21:58:34 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 21:58:34 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 21:58:34 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 21:58:34 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 21:58:34 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 21:58:34 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 21:58:34 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 21:58:34 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 21:58:34 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 21:58:34 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 21:58:34 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 21:58:34 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 21:58:34 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 21:58:34 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 21:58:34 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 21:58:34 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 21:58:34 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 21:58:34 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 21:58:34 INFO] [activity:198][39m Pausing after activity for 5s...
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 21:58:39 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 21:58:39 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 21:58:39 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 21:58:39 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 21:58:39 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 21:58:39 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 21:58:39 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 21:58:39 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[32m[2020-06-05 21:58:39 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 21:58:39 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 21:58:39 INFO] [experiment:276][39m Experiment ended with status: completed
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 21:58:39 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 21:58:39 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:02:50 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:02:50 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:02:50 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:02:51 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:02:51 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:02:51 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:02:51 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:02:51 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:02:51 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:02:51 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:02:51 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:02:51 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:02:51 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:02:51 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:02:51 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:02:51 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:02:51 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:02:51 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:02:51 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:02:51 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:02:51 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:02:51 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:02:51 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:02:51 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:02:51 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:02:51 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:02:51 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:02:51 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:02:51 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:02:51 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:02:51 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:02:51 INFO] [activity:198][39m Pausing after activity for 5s...
+[36m[2020-06-05 22:02:56 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:02:56 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:02:56 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:02:56 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:02:56 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:02:56 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:02:56 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:02:56 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:02:57 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:02:57 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:02:57 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:02:57 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:02:57 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:02:57 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:02:57 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[32m[2020-06-05 22:02:57 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:02:57 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:02:57 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:02:57 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:02:57 INFO] [experiment:276][39m Experiment ended with status: completed
+[36m[2020-06-05 22:02:57 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:02:57 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:02:57 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:08:11 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:08:11 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:08:11 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:08:11 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:08:11 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:08:11 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:08:11 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:08:11 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:08:11 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:08:11 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:08:11 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:08:11 DEBUG] [caching:42][39m Clearing activities cache
+[31m[2020-06-05 22:08:11 ERROR] [cli:122][39m Secrets make reference to an environment key that does not exist: admin
+[36m[2020-06-05 22:08:11 DEBUG] [cli:123][39m Secrets make reference to an environment key that does not exist: admin
+[36m[2020-06-05 22:09:31 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:09:31 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:09:31 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:09:32 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:09:32 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:09:32 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:09:32 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:09:32 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:09:32 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:09:32 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:09:32 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:09:32 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:09:32 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:09:32 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:09:32 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:09:32 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:09:32 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:09:32 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:09:32 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:09:32 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:09:32 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:09:32 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:09:32 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:09:32 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:09:32 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:09:32 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:09:32 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:09:32 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:09:32 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:09:33 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:09:33 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:09:33 INFO] [activity:198][39m Pausing after activity for 5s...
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:09:38 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:09:38 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:09:38 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:09:38 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:09:38 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:09:38 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:09:38 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:09:38 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[32m[2020-06-05 22:09:38 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:09:38 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:09:38 INFO] [experiment:276][39m Experiment ended with status: completed
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:09:38 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:09:38 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:10:36 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:10:36 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:10:36 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:10:36 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:10:36 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:10:36 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:10:36 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:10:36 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:10:36 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:10:36 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:10:36 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:10:36 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:10:36 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:10:36 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:10:36 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:10:36 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:10:36 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:10:36 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:10:36 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:10:36 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:10:36 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:10:36 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:10:36 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:10:36 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:10:36 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:10:36 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:10:36 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:10:36 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:10:36 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:10:37 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:10:37 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:10:37 INFO] [activity:198][39m Pausing after activity for 5s...
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:10:42 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:10:42 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:10:42 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:10:42 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:10:42 DEBUG] [probes:82][39m Deployment has '2' available replicas
+[36m[2020-06-05 22:10:42 DEBUG] [activity:233][39m Activity failed
+    Traceback (most recent call last):
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 55, in run_python_activity
+        return func(**arguments)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py", line 86, in microservice_available_and_healthy
+        "microservice '{name}' is not healthy".format(name=name))
+    chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/activity.py", line 226, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 60, in run_python_activity
+        sys.exc_info()[2])
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 55, in run_python_activity
+        return func(**arguments)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py", line 86, in microservice_available_and_healthy
+        "microservice '{name}' is not healthy".format(name=name))
+    chaoslib.exceptions.ActivityFailed: chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+[31m[2020-06-05 22:10:42 ERROR] [activity:187][39m   => failed: chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[33m[2020-06-05 22:10:42 WARNING] [hypothesis:201][39m Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[31m[2020-06-05 22:10:42 CRITICAL] [experiment:245][39m Steady state probe 'all-our-microservices-should-be-healthy' is not in the given tolerance so failing this experiment
+[32m[2020-06-05 22:10:42 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:10:42 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:10:42 INFO] [experiment:276][39m Experiment ended with status: deviated
+[32m[2020-06-05 22:10:42 INFO] [experiment:280][39m The steady-state has deviated, a weakness may have been discovered
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:10:42 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:10:42 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:12:32 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:12:32 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:12:32 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:12:32 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:12:32 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:12:32 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:12:32 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:12:32 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:12:32 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:12:32 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:12:32 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:12:32 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:12:33 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:12:33 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:12:33 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:12:33 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:12:33 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:12:33 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:12:33 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:12:33 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:12:33 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:12:33 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:12:33 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:12:33 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:12:33 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:12:33 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:12:33 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:12:33 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:12:33 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:12:33 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:12:33 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:12:33 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:12:33 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:12:33 INFO] [activity:198][39m Pausing after activity for 5s...
+[36m[2020-06-05 22:12:38 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:12:38 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:12:38 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:12:38 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:12:38 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:12:38 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:12:38 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:12:38 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:12:39 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:12:39 DEBUG] [probes:82][39m Deployment has '2' available replicas
+[36m[2020-06-05 22:12:39 DEBUG] [activity:233][39m Activity failed
+    Traceback (most recent call last):
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 55, in run_python_activity
+        return func(**arguments)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py", line 86, in microservice_available_and_healthy
+        "microservice '{name}' is not healthy".format(name=name))
+    chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/activity.py", line 226, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 60, in run_python_activity
+        sys.exc_info()[2])
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 55, in run_python_activity
+        return func(**arguments)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py", line 86, in microservice_available_and_healthy
+        "microservice '{name}' is not healthy".format(name=name))
+    chaoslib.exceptions.ActivityFailed: chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+[31m[2020-06-05 22:12:39 ERROR] [activity:187][39m   => failed: chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+[36m[2020-06-05 22:12:39 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[33m[2020-06-05 22:12:39 WARNING] [hypothesis:201][39m Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2020-06-05 22:12:39 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[31m[2020-06-05 22:12:39 CRITICAL] [experiment:245][39m Steady state probe 'all-our-microservices-should-be-healthy' is not in the given tolerance so failing this experiment
+[32m[2020-06-05 22:12:39 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:12:39 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:12:39 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:12:39 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:12:39 INFO] [experiment:276][39m Experiment ended with status: deviated
+[32m[2020-06-05 22:12:39 INFO] [experiment:280][39m The steady-state has deviated, a weakness may have been discovered
+[36m[2020-06-05 22:12:39 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:12:39 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:12:39 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:12:44 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:12:44 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:12:44 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:12:45 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:12:45 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:12:45 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:12:45 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:12:45 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:12:45 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:12:45 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:12:45 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:12:45 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:12:45 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:12:45 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:12:45 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:12:45 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:12:45 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:12:45 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:12:45 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:12:45 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:12:45 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:12:45 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:12:46 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:12:46 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:12:46 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:12:46 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:12:46 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:12:46 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:12:46 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:12:46 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:12:46 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:12:46 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:12:46 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:12:46 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:12:46 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:12:46 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:12:46 INFO] [activity:198][39m Pausing after activity for 15s...
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:13:01 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:13:01 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:13:01 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:13:01 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:13:01 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:13:01 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:13:01 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:13:01 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[32m[2020-06-05 22:13:01 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:13:01 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:13:01 INFO] [experiment:276][39m Experiment ended with status: completed
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:13:01 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:13:01 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:13:08 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:13:08 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:13:08 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:13:08 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:13:08 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:13:08 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:13:08 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:13:08 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:13:08 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:13:08 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:13:08 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:13:08 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:13:09 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:13:09 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:13:09 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:13:09 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:13:09 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:13:09 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:13:09 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:13:09 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:13:09 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:13:09 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:13:09 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:13:09 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:13:09 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:13:09 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:13:09 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:13:09 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:13:09 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:13:09 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:13:09 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:13:09 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:13:09 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:13:09 INFO] [activity:198][39m Pausing after activity for 10s...
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:13:19 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:13:19 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:13:19 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:13:19 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:13:19 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:13:19 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:13:19 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:13:19 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[32m[2020-06-05 22:13:19 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:13:19 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:13:19 INFO] [experiment:276][39m Experiment ended with status: completed
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:13:19 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:13:19 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:17:20 DEBUG] [cli:71][39m ###############################################################################
+[36m[2020-06-05 22:17:20 DEBUG] [cli:72][39m Running command 'run'
+[36m[2020-06-05 22:17:20 DEBUG] [cli:76][39m Using settings file '/home/eddy/.chaostoolkit/settings.yaml'
+[36m[2020-06-05 22:17:20 DEBUG] [settings:24][39m The Chaos Toolkit settings file could not be found at '/home/eddy/.chaostoolkit/settings.yaml'.
+[36m[2020-06-05 22:17:20 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:17:20 DEBUG] [__init__:355][39m No controls to apply on 'loader'
+[36m[2020-06-05 22:17:20 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:17:20 DEBUG] [caching:35][39m Cached 2 activities
+[32m[2020-06-05 22:17:20 INFO] [experiment:54][39m Validating the experiment's syntax
+[36m[2020-06-05 22:17:20 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:17:20 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:17:20 DEBUG] [secret:89][39m Secrets loaded
+[32m[2020-06-05 22:17:21 INFO] [experiment:103][39m Experiment looks valid
+[36m[2020-06-05 22:17:21 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2020-06-05 22:17:21 DEBUG] [caching:25][39m Building activity cache...
+[36m[2020-06-05 22:17:21 DEBUG] [caching:35][39m Cached 2 activities
+[36m[2020-06-05 22:17:21 DEBUG] [configuration:47][39m Loading configuration...
+[36m[2020-06-05 22:17:21 DEBUG] [secret:74][39m Loading secrets...
+[36m[2020-06-05 22:17:21 DEBUG] [secret:89][39m Secrets loaded
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:39][39m Initializing controls
+[32m[2020-06-05 22:17:21 INFO] [experiment:195][39m Running experiment: Do we remain available in face of pod going down?
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[32m[2020-06-05 22:17:21 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:17:21 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:17:21 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:17:21 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:17:21 DEBUG] [probes:82][39m Deployment has '3' available replicas
+[36m[2020-06-05 22:17:21 DEBUG] [activity:179][39m   => succeeded with 'True'
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:17:21 DEBUG] [hypothesis:212][39m allowed tolerance is True
+[32m[2020-06-05 22:17:21 INFO] [hypothesis:222][39m Steady state hypothesis is met!
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:17:21 INFO] [activity:161][39m Action: terminate-db-pod
+[36m[2020-06-05 22:17:21 DEBUG] [python:36][39m Activity 'terminate-db-pod' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/pod/actions.py'
+[36m[2020-06-05 22:17:21 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:17:21 DEBUG] [actions:194][39m Found 3 pods labelled 'app=simple-site' in ns default
+[36m[2020-06-05 22:17:21 DEBUG] [activity:181][39m   => succeeded without any result value
+[32m[2020-06-05 22:17:21 INFO] [activity:198][39m Pausing after activity for 5s...
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'method'
+[32m[2020-06-05 22:17:26 INFO] [hypothesis:184][39m Steady state hypothesis: Verifying service remains healthy
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[32m[2020-06-05 22:17:26 INFO] [activity:161][39m Probe: all-our-microservices-should-be-healthy
+[36m[2020-06-05 22:17:26 DEBUG] [python:36][39m Activity 'all-our-microservices-should-be-healthy' loaded from '/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py'
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:69][39m Using Kubernetes context: default
+[36m[2020-06-05 22:17:26 DEBUG] [probes:74][39m Found 1 deployment(s) named 'simple-site' in ns 'default'
+[36m[2020-06-05 22:17:26 DEBUG] [probes:82][39m Deployment has '2' available replicas
+[36m[2020-06-05 22:17:26 DEBUG] [activity:233][39m Activity failed
+    Traceback (most recent call last):
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 55, in run_python_activity
+        return func(**arguments)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py", line 86, in microservice_available_and_healthy
+        "microservice '{name}' is not healthy".format(name=name))
+    chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/activity.py", line 226, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 60, in run_python_activity
+        sys.exc_info()[2])
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaoslib/provider/python.py", line 55, in run_python_activity
+        return func(**arguments)
+      File "/home/eddy/git/github.com/techotron/k8s-cluster/Chaos/.venv/lib/python3.7/site-packages/chaosk8s/probes.py", line 86, in microservice_available_and_healthy
+        "microservice '{name}' is not healthy".format(name=name))
+    chaoslib.exceptions.ActivityFailed: chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+[31m[2020-06-05 22:17:26 ERROR] [activity:187][39m   => failed: chaoslib.exceptions.ActivityFailed: microservice 'simple-site' is not healthy
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'activity'
+[33m[2020-06-05 22:17:26 WARNING] [hypothesis:201][39m Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'hypothesis'
+[31m[2020-06-05 22:17:26 CRITICAL] [experiment:245][39m Steady state probe 'all-our-microservices-should-be-healthy' is not in the given tolerance so failing this experiment
+[32m[2020-06-05 22:17:26 INFO] [experiment:326][39m Let's rollback...
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:17:26 INFO] [rollback:25][39m No declared rollbacks, let's move on.
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'rollback'
+[32m[2020-06-05 22:17:26 INFO] [experiment:276][39m Experiment ended with status: deviated
+[32m[2020-06-05 22:17:26 INFO] [experiment:280][39m The steady-state has deviated, a weakness may have been discovered
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:355][39m No controls to apply on 'experiment'
+[36m[2020-06-05 22:17:26 DEBUG] [__init__:72][39m Cleaning up controls
+[36m[2020-06-05 22:17:26 DEBUG] [caching:42][39m Clearing activities cache
