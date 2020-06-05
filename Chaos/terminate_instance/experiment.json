@@ -1,0 +1,40 @@
+{
+  "version": "1.1.0",
+  "title": "AZ failure",
+  "description": "Simulate an AZ failure",
+  "changelog": "run:1",
+  "configuration": {
+       "aws_profile_name": "snowco",
+       "aws_region": "eu-west-2"
+  },
+  "steady-state-hypothesis": {
+      "title": "K8s isn't effected is an AZ goes down",
+      "probes": [
+          {
+              "type": "probe",
+              "name": "probe-http-get-200-1st-request",
+              "tolerance": 200,
+              "provider": {
+                  "type": "http",
+                  "timeout": 60,
+                  "verify_tls": false,
+                  "url": "http://test.lab.kube.esnow.uk"
+              }
+          }
+      ]
+  },
+  "method": [
+      {
+        "name": "stop-an-ec2-instance",
+        "type": "action",
+        "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.actions",
+            "func": "stop_instance",
+            "arguments": {
+                "instance_id": "i-0bbfed0122d504082"
+            }
+        }
+    }
+  ]
+}
