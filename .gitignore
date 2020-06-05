@@ -17,3 +17,6 @@
 
 # Rendered Manifest
 Manifest/cluster-manifest.yaml
+
+# Pyenv
+.venv
