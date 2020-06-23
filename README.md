@@ -9,6 +9,7 @@ From the ./Deploy directory:
 Run the `./k8s-deploy.sh` to deploy a cluster in your AWS account. Some variables will need to be changed in order to work for you.
 
 **Note:** This will attempt to create a certificate for the KubernetesDNS name. The validation method in the CFN template is `DNS` so you'll need to go to the ACM and create the necessary DNS records before the CFN stack finishes
+**TODO:** Automate ACM validation using CFN: https://aws.amazon.com/about-aws/whats-new/2020/06/aws-certificate-manager-extends-automation-certificate-issuance-via-cloudformation/
 
 ### Deploy HA Cluster
 
